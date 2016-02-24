@@ -1,0 +1,68 @@
+<ion-view title="Survey" hide-back-button="true">
+  <ion-content class="padding" >
+    <div class="list card" ng-hide="isDisabled" ng-repeat="(key, value) in allQ">
+      <div class="item item-text-wrap"  >
+          <h2>Q{{value.qid + 1}}: </h2><br><h2>{{value.question}}</h2>
+      </div>
+
+      <ion-radio  ng-show="value.choices.length > 1" 
+                  ng-repeat="(idx, choice) in value.choices" 
+                  ng-model="dumpp" 
+                  ng-value="idx"
+                  ng-change="changed(value.qid, choice)"
+                  required>
+        {{choice}}
+      </ion-radio>
+
+      <ion-checkbox ng-show="value.choices.length == 1" 
+                    ng-repeat="item in value.list" 
+                    ng-model="item.checked"
+                    ng-checked="item.checked"
+                    ng-change="checkChange(value.qid)">
+        {{item.text}}
+      </ion-checkbox>
+
+      <label class="item item-input item-stacked-label" ng-show="value.choices.length == 0">
+        <span class="input-label">Ans:</span>
+        <textarea placeholder="Comments" rows="10" ng-model="text" ng-change="changed(value.qid, text)"></textarea>
+      </label>
+
+      <span class="help-inline" ng-hide="valid" >
+        Question Should Be Selected or Answer.
+        <!--http://stackoverflow.com/questions/26463963/ionic-radio-button-validation-->
+      </span>
+    </div>
+
+    <div class="list card" ng-show="isDisabled">
+      <div class="item item-text-wrap">
+          <h2>Survey has been submitted</h2>
+      </div>
+    </div>
+    <div class="list card" ng-show="isDisabled">
+      <div class="item item-divider">
+        <h2>{{user.First}} {{user.Last}}</h2>
+        <p>{{user.Com}}</p>
+      </div>
+     
+      <div class='list' ng-repeat=" value in local ">
+        <a class="item item-icon-left not-active" >
+          <i class="icon ion-android-checkbox-outline"></i>
+          <h2>Q{{value.qid + 1}}</h2>
+          <p ng-show="!value.list">{{value.choice}}</p>
+          <p ng-show="value.list">{{selected(value.list, value.choice)}}</p>
+        </a>
+      </div>
+  
+    </div>
+
+    <div class="row" ng-hide="isDisabled">
+      <button class="col button button-block button-stable " style="margin: 0 10px;" 
+              ng-model="isDisabled"
+              ng-click="nextFuc(sinQ.qid)" 
+              ng-disabled="isDisabled">
+          <i > {{next.type}}</i>
+      </button>
+    </div>
+
+  </ion-content>
+</ion-view>

@@ -1,0 +1,73 @@
+var dump =[
+  {
+    "name": "Weezer",
+    "company": "El Scorcho",
+    "seat": "A1", 
+    "attend": false
+  },
+  {
+    "name": "Chevelle",
+    "company": "Family System",
+    "seat": "A1", 
+    "attend": false
+  },
+  {
+    "name": "Chevelle",
+    "company": "Family System",
+    "seat": "A1", 
+    "attend": false
+  },
+  {
+    "name": "Chevelle",
+    "company": "Family System",
+    "seat": "A1", 
+    "attend": false
+  },
+  {
+    "name": "Chevelle",
+    "company": "Family System",
+    "seat": "A1", 
+    "attend": false
+  },
+  {
+    "name": "Chevelle",
+    "company": "Family System",
+    "seat": "A1", 
+    "attend": false
+  },
+  {
+    "name": "Chevelle",
+    "company": "Family System",
+    "seat": "A1", 
+    "attend": false
+  }
+]
+
+/*
+$('#my-ajax-table').dynatable({
+  dataset: {
+    ajax: true,
+    ajaxUrl: '/panel/get',
+    ajaxOnLoad: true,
+    records: []
+  }
+});
+*/
+var sample = {
+"records": [
+{
+"someAttribute": "I am record one",
+"someOtherAttribute": "Fetched by AJAX"
+},
+{
+"someAttribute": "I am record two",
+"someOtherAttribute": "Cuz it's awesome"
+},
+{
+"someAttribute": "I am record three",
+"someOtherAttribute": "Yup, still AJAX"
+}
+],
+"queryRecordCount": 3,
+"totalRecordCount": 3
+}

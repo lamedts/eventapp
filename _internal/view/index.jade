@@ -1,0 +1,186 @@
+extends ../default/layout
+
+block content
+  .row
+    .col-xs-12
+      .thumbnail(style='padding:20px;')
+        table#infoTable.table.table-hover
+          thead
+            th(style='color:black;') Name
+            th From
+            //th Seat
+            th List
+            th Submit
+            th Attend
+          tbody
+
+    .col-xs-12.col-sm-6.col-md-4
+      .thumbnail
+        .caption
+          h4 Search
+        |Quering: 
+        input#test(type="search" data-dynatable-query="search" disabled)
+        br
+        |Keyword: 
+        input#keyword(type="test")
+
+    each val, idx in qq
+      .col-xs-12.col-sm-6
+        .thumbnail
+          .caption
+            h4 Q#{parseInt(idx) + 1} Chart
+            //
+              p
+                each item, idx_item in val
+                  | #{idx_item} #{item} <br>
+          div(id= 'qid'+idx class='barChart clearfix')
+
+
+        
+
+block js
+  script(src="/jspkg/vendor/jquery-1.7.2.min.js")
+  script(src="/jspkg/jquery.dynatable.js")
+  script(src="/javascripts/d3.v3.min.js")
+
+  script(type='text/javascript').
+    "use strict";
+    //===========================================
+    var qq = !{JSON.stringify(qq)};
+    //console.log(qArray)
+    var listJson;
+    var dynatable = $('#infoTable').dynatable({
+      dataset: {
+        records: listJson
+      },
+      features: {
+      	search: false
+      },
+      inputs: {
+        queries: $('#test')
+      }
+
+    }).data('dynatable');
+    function setToItems (argument) {
+      //console.log(argument);
+      dynatable.settings.dataset.originalRecords = argument;
+      dynatable.process();
+    }
+    function setJson(){
+      $.ajax({
+        url: '/panel/init',
+        success: function(data){
+          //console.log(data)
+          console.log('reset')
+        }
+      });
+    }
+
+    function getJson(){
+      console.log('reload')
+      $.ajax({
+        url: '/panel/get',
+        success: function(data){
+          listJson = data.list
+          //console.log(listJson)
+        }
+      });
+      setToItems(listJson);
+    }
+
+
+    //setJson()
+    getJson()
+    setInterval(getJson, 3000); 
+
+    //===========================================
+    $("#keyword").keyup(function (e) {
+      if (e.keyCode == 13) {
+        var e = jQuery.Event("keypress");
+        e.which = 13; //choose the one you want
+        e.keyCode = 13;
+        $("#test").val($(this).val());
+        $("#test").trigger(e);
+      }
+    });
+    //===========================================
+    
+    function draw_bar(data, ele) {
+      d3.select(ele)
+        .selectAll('div') 
+        .data(data) 
+          .enter() 
+          .append('div') 
+          .attr('class','item clearfix') 
+          .text(function(d){return d.key}) 
+          .append('div') 
+          .text(function (data) {
+              return data.value; 
+          })          
+          .attr('class','bar') 
+          .style('width', function(d){ 
+              return (d.value* ($(ele).width()/15))  + 'px'
+          });
+    };
+
+    function draw_bubble(data, ele) {
+
+      var diameter = 450;
+
+      var bubble = d3.layout.pack()
+        .size([diameter,diameter])
+
+      function classes(root) {
+        var classes = [];
+        for ( var item in root){
+          classes.push({packageName: "q3", className: item, value: root[item]});
+        }
+        return {children: classes};
+      }
+
+      var svg = d3.select(ele).append("svg")
+      .attr("width", diameter)
+      .attr("height", diameter)
+      .attr("class", "bubble");
+
+
+      var json = data,
+          format = d3.format(",d"),
+          color = d3.scale.category10();
+
+      var nodes = bubble.nodes(classes(json)).filter(function(d) { return !d.children; })
+
+      var node = svg.selectAll(".node")
+          .data(nodes)
+        .enter().append("g")
+          .attr("class", "node")
+          .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+      node.append("title")
+          .text(function(d) { return d.className + ": " + format(d.value); });
+
+      node.append("circle")
+          .attr("r", function(d) { return d.r; })
+          .style("fill", function(d) { return color(d.className); });
+
+      node.append("text")
+          .attr("dy", ".3em")
+          .style("text-anchor", "middle")
+          .text(function(d) { return d.className.substring(0, d.r / 3); })
+
+ 
+    };
+    
+    //d3.json(path, draw);
+    for (var key in qq) {
+      var data = Object.keys(qq[key]).map(function(k) { return {key:k, value:qq[key][k]} })
+      if(data.length != 1) 
+        draw_bar(data, '#qid'+key)
+      else
+        draw_bubble(data[0].value,'#qid'+key)
+    }
+
+
+
+
+

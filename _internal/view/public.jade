@@ -1,0 +1,32 @@
+extends ../default/layout
+
+block content
+
+  .row
+    .col-md-8.col-xs-12.col-centered.table-responsive
+      table.table.table-hover
+        thead
+          tr
+            th
+            th Name
+            th Type
+            th.hidden-xs Size
+            th.hidden-xs Date
+        each file in files.dir
+          tr
+            td
+            td
+              a(href=file.name) #{file.name}
+            td= file.type
+            td.hidden-xs
+            td.hidden-xs
+        each file in files.file
+          tr
+            td
+            td
+              a(href=file.name) #{file.name}
+            td= file.type
+            td.hidden-xs
+            td.hidden-xs
+
+

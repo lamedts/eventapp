@@ -1,0 +1,79 @@
+<ion-view title="Survey" hide-back-button="true">
+  <ion-content class="padding" >
+    <div class="list card" ng-hide="isDisabled">
+      <div class="item item-text-wrap">
+          <h2>Q{{sinQ.qid + 1}}: </h2><br><h2>{{sinQ.question}}</h2>
+      </div>
+
+      <ion-radio  ng-show="sinQ.qid == 0 || sinQ.qid == 1  || sinQ.qid == 3 || sinQ.qid == 4" 
+                  ng-repeat="choice in sinQ.choices" 
+                  ng-model="dumpp" 
+                  ng-value="choice.opt"
+                  ng-change="radioChange(sinQ.qid, choice)"
+                  required>
+        {{choice.name}}
+      </ion-radio>
+
+      <ion-checkbox ng-show="sinQ.qid == 2" 
+                    ng-repeat="item in List" 
+                    ng-model="item.checked"
+                    ng-checked="item.checked"
+                    ng-change="checkChange()">
+        {{item.text}}
+      </ion-checkbox>
+
+      <label class="item item-input item-stacked-label" ng-show="sinQ.qid == 5">
+        <span class="input-label">Ans:</span>
+        <textarea placeholder="Comments" rows="10" ng-model="text" ng-change="changed(sinQ.qid, text)"></textarea>
+      </label>
+
+      <span class="help-inline" ng-hide="valid" >
+        Question Should Be Selected or Answer.
+        <!--http://stackoverflow.com/questions/26463963/ionic-radio-button-validation-->
+      </span>
+    </div>
+
+    <div class="list card" ng-show="isDisabled">
+      <div class="item item-text-wrap">
+          <h2>Survey has been submitted</h2>
+      </div>
+    </div>
+    <div class="list card" ng-show="isDisabled">
+      <div class="item item-divider">
+        <h2>{{user.First}} {{user.Last}}</h2>
+        <p>{{user.Com}}</p>
+      </div>
+     
+      <div class='list' ng-repeat="(key, value) in local">
+        <a class="item item-icon-left not-active" >
+          <i class="icon ion-android-checkbox-outline"></i>
+          <h2>{{key}}</h2>
+          <p ng-show="key != 'Q3'">{{value}}</p>
+          <p ng-show="key == 'Q3'">{{selected(Q3)}}</p>
+        </a>
+      </div>
+  
+    </div>
+
+    <div class="row" ng-hide="isDisabled">
+      <button ng-model="isDisabled" class="col button button-block button-stable " style="margin: 0 10px;" ng-click="preFuc(sinQ.qid)" ng-disabled="sinQ.qid=='0'">
+          <i class="icon ion-chevron-left" style="font-size: 32px;"></i>
+      </button>
+      <button class="col button button-block button-stable " style="margin: 0 10px;" 
+              ng-model="isDisabled"
+              ng-click="nextFuc(sinQ.qid)" 
+              ng-disabled="isDisabled" 
+              ng-show="sinQ.qid=='5'">
+          <i > {{next.type}}</i>
+      </button>
+      <button class="col button button-block button-stable " style="margin: 0 10px;" 
+              ng-click="nextFuc(sinQ.qid)" 
+              ng-model="isDisabled"
+              ng-disabled="false" 
+              ng-show="sinQ.qid!='5'">
+          <i  class="icon ion-chevron-right" style="font-size: 32px;"></i>
+      </button>
+    </div>
+
+  </ion-content>
+</ion-view>

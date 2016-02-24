@@ -1,0 +1,47 @@
+doctype html
+html
+  head
+    title= title
+    
+    link(rel='stylesheet', href='/stylesheets/normalize.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+    //link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap-theme.min.css')
+    link(rel='stylesheet', href='//cdn.jsdelivr.net/pure/0.6.0/pure-min.css')
+    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Raleway')
+
+    link(rel='stylesheet', href='/stylesheets/custom.css')
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+
+    script(href='http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js')
+    link(rel='stylesheet', href='/jspkg/jquery.dynatable.css')
+
+    
+
+  body
+    header(style="background: white")
+      nav#header
+        #nav-left
+          ul.nav.navbar-nav
+            li
+              a.pure-menu-link(href="/") 
+        #brand.navbar-header
+          a.pure-menu-heading(href="/" style="color: #000") IBM Summit 2016<br>Panel
+        #nav-right
+          ul.nav.navbar-nav.navbar-right
+            li
+              a.pure-menu-link(href="/") 
+            li
+              span.icon-bar 
+            li
+              a.pure-menu-link(href="/") 
+            li.disabled(role="presentation")
+              a.pure-menu-link(href="/") 
+
+
+    #body.container
+      block content
+
+    #footer
+
+  block js

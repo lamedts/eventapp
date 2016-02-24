@@ -1,0 +1,33 @@
+<ion-view view-title="Seating Plan">
+  <ion-content class="padding">
+
+<div class="list card">
+
+  <div class="item item-avatar ">
+    <img src="../img/user.png">
+    <h3>Welcome,</h3>
+    <h2><strong>{{user.First}} {{user.Last}}</strong></h2>
+  </div>
+
+  <div class="item item-divider">
+    <div class="row">
+
+  <div class="col">Company:</div>
+  <div class="col">{{user.Com}}</div>
+</div>
+<div class="row">
+
+  <div class="col">Table:</div>
+  <div class="col" id="seatID">{{user.seat}}</div>
+</div>
+
+  </div>
+
+  <div class="item item-body" ng-controller="MediaCtrl">
+    <img class="full-image" src="https://i.imgur.com/JnGsC9W.jpg" ng-click="showImages($event, 'img')">
+    <!-- <img class="full-image" src="../img/Floor Plan new.jpg" ng-click="showImages($event, 'img')"> -->
+  </div>
+
+</div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,42 @@
+<ion-modal-view ng-controller="comMgt">
+  <ion-header-bar class="bar-positive fix-buttons">
+    <button class="button" ng-click="closeModal()">Back</button>
+     <h1 class="title">{{ imgSet[imgIdx].comment.length }} Comments</h1>
+  </ion-header-bar>
+  <ion-content has-bouncing="true">
+
+
+
+
+<div class="list card" ng-repeat="(key, comment) in imgSet[imgIdx].comment track by $index">
+<!--
+  <div class="item item-avatar">
+    <img src="mcfly.jpg">
+    <h2>{{comment}}</h2>
+  </div>
+    <div class="item item-text-wrap">
+    <h2>{{comment}}</h2>
+  </div>
+  -->
+  <a class="item item-icon-left">
+    <i class="icon ion-chatbubble"></i>
+    <h2>{{comment}}</h2>
+  </a>
+
+</div>
+
+
+  </ion-content>
+
+<div class="list fixed-outside" style="height:auto">
+  <div class="item item-input-inset">
+    <label class="item-input-wrapper">
+      <input type="text" placeholder="Comments" ng-model="newCmt">
+    </label>
+    <button class="button button-small" ng-click="postCmt(imgSet[imgIdx].id)">
+      POST
+    </button>
+  </div>
+</div>
+
+</ion-modal-view>

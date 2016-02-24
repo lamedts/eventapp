@@ -1,0 +1,82 @@
+body {
+  font: 14px "Raleway", "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  border-top: 4px solid #222;
+}
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+/*
+ *		Header
+ */
+#header, #header div {
+	overflow: auto;
+}
+header {
+	padding: 3%;
+	border-bottom: 1px solid rgba(0,0,0,0.07);
+  margin-bottom: 2%;
+}
+#header {
+	position: relative;
+}
+#header #brand {
+  font-weight: 900;
+  font-size: 2em;
+  float: left;
+  width: 100%;
+  text-align: center;
+}
+#header #nav-left {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+  width: 35%;
+  text-align: left;
+  overflow: hidden;
+}
+#header #nav-right {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+  width: 35%;
+  text-align: right;
+  overflow: hidden;
+}
+
+thead a{
+/* background color for the head part */
+/* font color for the head part */
+color:#000 !important;
+
+text-transform:uppercase;
+
+font-weight:bold;
+}
+
+.barChart{
+  font-family:verdana;
+  font-size: 13px;
+  border: 1px solid #eee;
+  padding: 10px;
+  margin: 10px;
+}
+.barChart .item {
+  float: left;
+  height: 40px;
+  line-height: 40px;
+  margin-bottom: 5px;
+  text-align: left;
+  width: 700px;
+}
+.barChart .bar {
+  background-color: blue;
+  color: #fff;
+  float: left;
+  height: 40px;
+  text-align: right;
+  margin-right: 10px;
+  padding-right: 10px;
+}
+.clearfix{zoom:1;}
+.clearfix:after{content:'.';display:block;clear:both;visibility:hidden;height:0;font-size:0;}

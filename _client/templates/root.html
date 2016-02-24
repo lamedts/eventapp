@@ -1,0 +1,66 @@
+<ion-view view-title="2016 HK Channel Summit" hide-nav-bar="true">
+  <ion-content class="padding" >
+    <div class="row">
+      <div class="col">
+        <img src="https://i.imgur.com/6cGC0wx.png" width="100%">
+        <!-- <img src="../img/words_crop.png" width="100%">-->
+        </div>
+    </div>
+    <div class="row">
+      <div class="list card col" >
+        <a class="item item-icon-left item-icon-right" href="" ng-click="reg()">
+          <i class="icon ion-android-contacts"></i>
+            Register
+          <i class="icon ion-android-arrow-forward"></i>
+        </a>
+      </div>
+    </div>
+    <div class="row nop">
+      <div class="col nop">
+        <img src="https://i.imgur.com/HUapdc5.png" width="100%">
+        <!-- <img src="../img/icons_crop_2.png" width="100%"> -->
+      </div>
+    </div>
+  </ion-content>
+     <script id="root.html" type="text/ng-template">
+      <ion-modal-view >
+      <ion-header-bar class="bar-positive fix-buttons">
+          <button class="button" ng-click="cancel()">Cancel</button>
+           <h1 class="title">{{ pageTitle }}</h1>
+        </ion-header-bar>
+        <ion-content has-bouncing="true">
+          <div class="list card">
+              <form  name="regForm" class="padding">
+                <label class="item item-input">
+                  <span class="input-label">First Name</span>
+                  <input type="text" placeholder="John" ng-model="user.First" required>
+                </label>
+                <label class="item item-input">
+                  <span class="input-label">Last Name</span>
+                  <input type="text" placeholder="Doe" ng-model="user.Last" required>
+                </label>
+                <label class="item item-input">
+                  <span class="input-label">Company</span>
+                  <button class="button button-small button-stable " 
+                  		  modal-select
+                          ng-model="user.Com" 
+                          options="selectables" 
+                          modal-title="Select Your Company"
+                          ng-show='user.Com==null'>
+                  Select it
+                  <div class="option">
+                    {{option}}
+                  </div>
+                </button>
+                <div>{{user.Com}}</div>
+                </label>
+                <br>
+                <button class="button button-full button-positive" ng-disabled="regForm.$invalid" ng-click="submit(user)">
+                  Submit
+                </button>
+              </form>
+          </div>
+        </ion-content>
+      </ion-modal-view>
+    </script>
+</ion-view>
