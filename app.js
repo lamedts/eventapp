@@ -20,7 +20,7 @@ var auth 	= require('http-auth'),
 		}
 	);
 var host = process.env.VCAP_APP_HOST || 'localhost';
-var port = process.env.VCAP_APP_PORT || 3000;
+var port = process.env.VCAP_APP_PORT || process.env.PORT || 3000;
 var services = JSON.parse(process.env.VCAP_SERVICES || "{}");
 var dburl = 'https://1e68e1b3-c986-4ad5-b1a5-be3b44bed133-bluemix:84b879e3802d7072715c36eb4209a6feae0c14e4b98e362c2e0f920c199f7b1b@1e68e1b3-c986-4ad5-b1a5-be3b44bed133-bluemix.cloudant.com';
 if(JSON.stringify(services) === '{}')
