@@ -5,7 +5,8 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+//angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngMaterial'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -23,12 +24,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services'])
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider, $mdGestureProvider) {
 
   // Ionic uses AngularUI Router which uses the concept of states
   // Learn more here: https://github.com/angular-ui/ui-router
   // Set up the various states which the app can be in.
   // Each state's controller can be found in controllers.js
+
+  $mdGestureProvider.skipClickHijack(); //[lame|notice] prevent one click two fires
+  $ionicConfigProvider.tabs.position('top');
+  $ionicConfigProvider.navBar.alignTitle('center');
+  
   $stateProvider
 
   .state('root', {

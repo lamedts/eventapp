@@ -2,30 +2,38 @@ extends ../default/layout
 
 block content
   .row
-    .col-xs-12
+    .col-xs-9
       .thumbnail(style='padding:20px;')
         table#infoTable.table.table-hover
           thead
             th(style='color:black;') Name
             th From
-            //th Seat
             th List
             th Submit
             th Attend
           tbody
+    
 
-    .col-xs-12.col-sm-6.col-md-4
+
+    .col-xs-12.col-sm-3.col-md-3
       .thumbnail
         .caption
-          h4 Search
-        |Quering: 
-        input#test(type="search" data-dynatable-query="search" disabled)
-        br
-        |Keyword: 
-        input#keyword(type="test")
+          form.form-horizontal
+            .form-group
+              .col-sm-3.control-label
+                | Quering
+              .col-sm-9
+                input.form-control#test(type="text" data-dynatable-query="search" disabled)
+            .form-group
+              .col-sm-3.control-label
+                | Keyword
+              .col-sm-9
+                input.form-control#keyword(type="text" ) 
+
+
 
     each val, idx in qq
-      .col-xs-12.col-sm-6
+      .col-xs-12.col-sm-4
         .thumbnail
           .caption
             h4 Q#{parseInt(idx) + 1} Chart
@@ -125,10 +133,11 @@ block js
 
     function draw_bubble(data, ele) {
 
-      var diameter = 450;
+      var x_diameter = $(ele).width();
+      var y_diameter = 500;
 
       var bubble = d3.layout.pack()
-        .size([diameter,diameter])
+        .size([x_diameter,y_diameter])
 
       function classes(root) {
         var classes = [];
@@ -139,8 +148,8 @@ block js
       }
 
       var svg = d3.select(ele).append("svg")
-      .attr("width", diameter)
-      .attr("height", diameter)
+      .attr("width", x_diameter)
+      .attr("height", y_diameter)
       .attr("class", "bubble");
 
 
@@ -180,7 +189,18 @@ block js
         draw_bubble(data[0].value,'#qid'+key)
     }
 
-
+    $(window).on('resize', function(){
+      $('#qid1').empty()
+      $('#qid2').empty()
+      $('#qid3').empty()
+      for (var key in qq) {
+        var data = Object.keys(qq[key]).map(function(k) { return {key:k, value:qq[key][k]} })
+        if(data.length != 1) 
+          draw_bar(data, '#qid'+key)
+        else
+          draw_bubble(data[0].value,'#qid'+key)
+      }
+    });
 
 
 

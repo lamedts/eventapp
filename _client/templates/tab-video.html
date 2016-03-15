@@ -1,18 +1,24 @@
-<ion-view view-title="Video">
+<ion-view view-title="IBM">
   <ion-content class="padding">
     <div class="list card" ng-repeat="video in ustream">
-      <div class="item item-divider">{{video.fone}}<br ng-show="video.ftwo != null">{{video.ftwo}}</div>
-      <div class="item item-body" ng-controller="MediaCtrl">
+      
+      <div class="item item-image" >
         <!-- <iframe ng-src="{{trustSrc(video.link)}}" frameborder="0" width="100%" allowfullscreen></iframe> -->
         <!-- 
         <img 	class="full-image button" 
         		ng-src="{{trustSrc('https://img.youtube.com/vi/'+video.id+'/maxresdefault.jpg')}}"
         		ng-click="showImages($event, 'vid', video.link)">
         -->
-        <img  class="full-image button" 
+
+        <img  class="full-image" 
             ng-src="{{trustSrc('https://ustvstaticcdn1-a.akamaihd.net/i/video/picture/0/1/81/81484/'+video.id+'/1_21825774_'+video.id+',192x108,b,1:2.jpg')}}"
-            ng-click="showImages($event, 'vid', video.link)">
+            >
      </div>
+     <div class="item item-divider">{{video.fone}} {{video.ftwo}}</div>
+     <a class="item item-icon-left assertive" href="" ng-controller="MediaCtrl" ng-click="showImages($event, 'vid', video.link)">
+        <i class="icon ion-ios-play"></i>
+        Start Playing
+      </a>
     </div>
   </ion-content>
 </ion-view>

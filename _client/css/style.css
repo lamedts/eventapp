@@ -17,9 +17,16 @@
 }
 */
 
+.wallpaper {
+  /*background: url('https://i.imgur.com/NVT1Adx.jpg') no-repeat fixed; */
+  background: url('../img/AppBackground_2.jpg') no-repeat fixed; 
+  background-size: 100% 100%;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+}
 .pane {
-  background: url('https://i.imgur.com/NVT1Adx.jpg') no-repeat fixed; 
-  /*background: url('../img/bg.jpg') no-repeat fixed; */
+  background: #f9f9f9; 
   background-size: 100% 100%;
   -webkit-background-size: cover;
   -moz-background-size: cover;
@@ -120,4 +127,7 @@ media handler
     -webkit-align-items: center;
     -ms-flex-align: center;
     align-items: center;
+}
+.card{
+  border-radius: 5px !important;
 }

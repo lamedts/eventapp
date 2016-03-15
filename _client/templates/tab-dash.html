@@ -1,22 +1,20 @@
-<ion-view view-title="BP & IBM">
+<ion-view view-title="IBM">
   <ion-content class="padding" ng-controller="MediaCtrl">
     <ion-list>
-      <ion-item class="list card" ng-repeat="(key, img) in imgSet" >
+      <div class="list card" ng-repeat="(key, img) in items" >
         <div class="item item-divider">{{img.by}}</div>
-        <div class="item item-body">
-          <div class="item item-image" >
-            <img ng-src="https://lvm.swel.tk/api/imgMgt/images/compress/{{img.name}}" ng-click="showImages($event, 'img')">
-          </div>
+        <div class="item item-image" >
+          <img ng-src="https://lvm.swel.tk/api/imgMgt/images/compress/{{img.name}}" ng-click="showImages($event, 'img')">
         </div>
         <div class="item item-divider" >
           <span class="button button-small" ng-click="thumbUp(key, img.id, likeSet[key].like)">{{imgSet[key].like}} Like</span>
           <span class="button button-small" ng-click="showImages($event, 'cmt', key)">{{imgSet[key].comment.length}} Comments</span>
         </div>
-        <a class="item item-icon-left" ng-repeat="(key, comment) in imgSet[key].comment track by $index">
+        <a class="item item-icon-left" ng-repeat="(key, comment) in items[key].comment track by $index">
           <i class="icon ion-chatbubble"></i>
           {{comment}}
         </a>
-      </ion-item>
+      </div>
     </ion-list>
     <ion-infinite-scroll ng-if="!noMoreItemsAvailable" on-infinite="loadMore()" distance="10%"></ion-infinite-scroll>
   </ion-content>

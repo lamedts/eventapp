@@ -59,27 +59,6 @@ app.run(function($rootScope, $http, $ionicLoading, User, qSet) {
     }
     //console.log($rootScope.list)
   };
-
-  $rootScope.setData = function(){
-    $http({
-      method: 'GET',
-      url: './api/set'
-    }).then(
-      function successCallback(response) {}, 
-      function errorCallback(response) {}
-    );
-  };
-  $rootScope.getData = function(){
-    //$rootScope.setData();
-    $http({
-      method: 'GET',
-      url: './api/get'
-    }).then(function successCallback(response) {
-      $rootScope.imgSet = response.data;
-    }, function errorCallback(response) {});
-  };
-  $rootScope.setData()
-  $rootScope.getData();
 });
 
 app.controller('uploadCtrl', ['$rootScope', '$scope', 'Upload', '$timeout', '$ionicLoading', '$ionicPopup', '$state', '$window', function ($rootScope, $scope, Upload, $timeout, $ionicLoading, $ionicPopup, $state, $window) {
@@ -174,13 +153,13 @@ app.controller('dashCtrl', function($rootScope, $scope, $http, $ionicModal, sock
 
 
 
-  $rootScope.noMoreItemsAvailable = false;
-  $rootScope.loadMore = function() {
-    $rootScope.items.push($rootScope.imgSet[$rootScope.items.length]);
-    if ( $rootScope.items.length == $rootScope.imgSet.length ) {
-      $rootScope.noMoreItemsAvailable = true;
+  $scope.noMoreItemsAvailable = false;
+  $scope.loadMore = function() {
+    $scope.items.push($rootScope.imgSet[$rootScope.items.length]);
+    if ( $scope.items.length == $rootScope.imgSet.length ) {
+      $scope.noMoreItemsAvailable = true;
     }
-    $rootScope.$broadcast('scroll.infiniteScrollComplete');
+    $scope.$broadcast('scroll.infiniteScrollComplete');
     console.log($rootScope.items)
   };
   $rootScope.items = [];
@@ -203,7 +182,24 @@ app.controller('dashCtrl', function($rootScope, $scope, $http, $ionicModal, sock
     };
   }
   //console.log(User)
-
+  $rootScope.setData = function(){
+    $http({
+      method: 'GET',
+      url: './api/set'
+    }).then(
+      function successCallback(response) {}, 
+      function errorCallback(response) {}
+    );
+  };
+  $rootScope.getData = function(){
+    //$rootScope.setData();
+    $http({
+      method: 'GET',
+      url: './api/get'
+    }).then(function successCallback(response) {
+      $rootScope.imgSet = response.data;
+    }, function errorCallback(response) {});
+  };
   $rootScope.setData()
   $rootScope.getData();
   setInterval($rootScope.getData, 3000);
@@ -213,8 +209,6 @@ app.controller('dashCtrl', function($rootScope, $scope, $http, $ionicModal, sock
     if(typeof oldValue === 'undefined') { return; }
     if (newValue.length === oldValue.length) { return; }
     console.log('updated');
-    $rootScope.items = [];
-    $rootScope.loadMore();
 
   });
   $scope.thumbUp = function(key, id, ele) {
@@ -228,12 +222,7 @@ app.controller('rootCtrl', function($rootScope, $scope, $state, $ionicModal,$htt
   $scope.selectables = [ 
   'Cloud',
   'Watson',
-  'Social', 
-  'Security',
-  'Bluemix',
-  'Verse',
-  'SoftLayer',
-  'Mobile'
+  'Social'
   ];
   
   $rootScope.user = User;
@@ -341,17 +330,14 @@ app.controller('qDetailCtrl', function($rootScope, $scope, $stateParams, $state,
       $scope.next.disable = true;
       $scope.next.type = "Wait For Upload";
       $scope.local = $rootScope.ans
-      console.log($scope.local);
+      console.log($scope.selected($rootScope.Q3));
       localStorage.setItem("user", JSON.stringify($rootScope.user));
       localStorage.setItem("ans", JSON.stringify($scope.local));
       var dump = Submit.postData({user: $rootScope.user, ans: $scope.local});
       setTimeout(function(){ 
         $scope.next = dump;
-        console.log('submited', dump)
       }, 3000);
-
     }else if(parseInt(qid) >=0 && parseInt(qid)<=4){
-      console.log(dump)
       dump = parseInt(qid) + 1;
       $state.go($state.current, {qId: dump}, { reload: true });
     }
