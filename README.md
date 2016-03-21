@@ -1,7 +1,9 @@
 # Event App
 
-A barebones Node.js app using [Express 4](http://expressjs.com/).
-
+A Event App using AngularJS, Nodejs
+####Function:
++ Photo uploading
++ Comments on Photo
 
 
 ## Running Locally
@@ -28,7 +30,7 @@ Or<br>
 [![Deploy to Heroku](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy)
 
 ## Deploying to Bluemix
-Can be deployed by using cloudfoundry
+Can be deployed by using [Cloud Foundry](https://console.ng.bluemix.net/docs/starters/install_cli.html)
 <br>Or<br>
 [![Deploy to Bluemix](https://bluemix.net/deploy/button.png)](https://bluemix.net/deploy)
 <!--
