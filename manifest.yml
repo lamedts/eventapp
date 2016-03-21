@@ -1,0 +1,8 @@
+applications:
+- path: .
+  memory: 768M
+  instances: 1
+  domain: mybluemix.net
+  name: eventapp
+  host: eventapp
+  disk_quota: 1024M
