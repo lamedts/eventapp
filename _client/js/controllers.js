@@ -197,7 +197,7 @@ app.controller('dashCtrl', function($rootScope, $scope, $http, $ionicModal, sock
   $scope.thumbUp = function(key, id, ele) {
     $rootScope.imgSet[key].like++;
     console.log('id: ' + id);
-    socket.emit('tUP', { likeIdx: id });
+    socket.emit('tUP', { iid: id });
   };  
   socket.on('new', function (data) {
     //$rootScope.imgSet = data.newSet;

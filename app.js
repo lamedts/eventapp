@@ -37,7 +37,7 @@ var testdb = "https://117ee633-dffc-42ec-8129-c278db864778-bluemix:a32b17c556a29
 //var realdb = "https://faffb586-e17e-4d67-979b-7cb55ff54819-bluemix:990dd1d043a34329e1dca54ddcc65b2eb2cf076ce028d0788536c00d396c0a7f@faffb586-e17e-4d67-979b-7cb55ff54819-bluemix.cloudant.com"
 var dburl = testdb
 var str_service = JSON.stringify(services)
-str_service = '{}'
+//str_service = '{}'
 if(str_service === '{}'){
 	global.nosql = dburl;
 	global.nosql_host = '117ee633-dffc-42ec-8129-c278db864778-bluemix.cloudant.com'
@@ -88,7 +88,7 @@ app.get('/qSet', qSet.findAll);
 //app.get('/api/reset', imgPhp.reset);
 
 
-
+app.get('/api/users', usersInfo.getUserList)
 app.get('/api/users/:uid', usersInfo.getUserInfo)
 app.get('/api/img', imgInfo.getImg)
 app.get('/api/img/:iid', imgInfo.getImg)
