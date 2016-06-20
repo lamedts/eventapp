@@ -1,0 +1,32 @@
+<ion-view view-title="IBM">
+  <ion-content class="padding">
+
+<div class="list card">
+  <div class="item item-divider">
+    <div class="col">Feedback</div>
+  </div>
+
+  <div class="item item-body">
+    <label class="item item-input ">
+      <textarea placeholder="Minimum of 100 words" rows="10" ng-model="text" ng-change=""></textarea>
+    </label>
+  </div>
+
+</div>
+
+
+
+  <button class="button button-stable button-full"  ng-click="" style="color: #5f98e7">
+  Save
+  </button>
+  <button class="button button-stable button-full"  ng-click="send(user, text);closeModal()" style="color: #5f98e7">
+  Watson Personality Insight
+  </button>  
+  <a  class="button button-clear" href="https://personality-insights-livedemo.mybluemix.net/" target="_blank">
+    Official Demo
+  </a>
+
+
+
+  </ion-content>
+</ion-view>

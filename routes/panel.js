@@ -62,14 +62,14 @@ var setData = function( callback){
     callback && callback();
   });
 };
-setList(function(){console.log('reset');});
-setData(function(){console.log('setData()');});
 
 exports.index = function (req, res, next) {
+
     res.render('index', { title: 'IBM', qq: combine });
 };
 
 exports.getInfo = function (req, res, next) {
+
     res.send({list: global.list, ans:combine});
 };
 
@@ -92,6 +92,14 @@ exports.append = function (req, res, next) {
 };
 
 exports.test = function(req, res){
+
   setData();
 };
 
+exports.ctrl = function (req, res, next) {
+
+    res.render('ctrl', { title: 'IBM', qq: combine });
+};
+
+setList(function(){console.log('reset');});
+setData(function(){console.log('setData()');});

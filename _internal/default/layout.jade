@@ -4,11 +4,17 @@ html
     title= title
     
     link(rel='stylesheet', href='/stylesheets/normalize.css')
-    link(rel='stylesheet', href='/stylesheets/bootstrap.css')
-    //link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
+    //link(rel='stylesheet', href='/stylesheets/bootstrap.css')
+    link(rel='stylesheet', href='/stylesheets/bootstrap.min.css')
     link(rel='stylesheet', href='/stylesheets/bootstrap-theme.min.css')
     link(rel='stylesheet', href='//cdn.jsdelivr.net/pure/0.6.0/pure-min.css')
-    link(rel='stylesheet', href='https://fonts.googleapis.com/css?family=Raleway')
+    link(rel='stylesheet', href='//fonts.googleapis.com/css?family=Raleway')
+
+    link(rel='stylesheet', href='//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css')
+    link(rel='stylesheet', href='//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css')
+    script(href='//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js')
+    script(href='//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js')
+
 
     link(rel='stylesheet', href='/stylesheets/custom.css')
     meta(name="viewport" content="width=device-width, initial-scale=1")
@@ -19,8 +25,8 @@ html
     
 
   body
-    header(style="background: white")
-      nav#header
+    header(style="background: white" )
+      nav#header( style="background-color:white!important;box-shadow:0 0 0 0 white!important;height:auto!important;")
         #nav-left
           ul.nav.navbar-nav
             li

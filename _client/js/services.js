@@ -21,11 +21,14 @@ app.factory('socket', ['$rootScope', function($rootScope) {
 
 app.factory('User', function () {
     var user = {};
-    user.First = '';
-    user.Last = '';
-    user.Com = null;  
+    //user.First = '';
+    //user.Last = '';
+    //user.Comp = null;  
     user.seat = null;  
     user.submit = false;
+    user.name = '';
+    user.uid = '';
+    user.tool = false;
     return user;
 
 });

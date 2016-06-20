@@ -15,7 +15,11 @@
     "nano" : "*",
     "path": "*",
     "request": "*",
-    "http-auth":"*"
+    "http-auth":"*",
+    "connect-multiparty": "*", 
+    "moment": "*",
+    "watson-developer-cloud": "*",
+    "range-parser": "*"
   }
 
 }

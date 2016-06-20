@@ -85,15 +85,17 @@ exports.findChoices = function (req, res, next) {
     res.send(qusetionSet[id]);
 };
 
-var cloudant_url = "https://1e68e1b3-c986-4ad5-b1a5-be3b44bed133-bluemix:84b879e3802d7072715c36eb4209a6feae0c14e4b98e362c2e0f920c199f7b1b@1e68e1b3-c986-4ad5-b1a5-be3b44bed133-bluemix.cloudant.com"
-var testDB = 'summit_raw'
+//var cloudant_url = "https://1e68e1b3-c986-4ad5-b1a5-be3b44bed133-bluemix:84b879e3802d7072715c36eb4209a6feae0c14e4b98e362c2e0f920c199f7b1b@1e68e1b3-c986-4ad5-b1a5-be3b44bed133-bluemix.cloudant.com"
+var testDB = 'ans'
 var realDB = 'summit'
-var cloudant_db = testDB
+var cloudant_db = 'survey'
+
+console.log(global.nosql)
 
 exports.submit = function(req, res, next){
     console.log('submit')
-    var url = cloudant_url
-    var nano = require('nano')(url);
+    //var url = cloudant_url
+    var nano = require('nano')(global.nosql);
     var ndb = nano.db.use(cloudant_db);
     //ndb.insert({ crazy: true }, 'rabbit', function(err, body, header) {
     ndb.insert(req.body, function(err, body, header) {

@@ -13,30 +13,12 @@ app.run(function($rootScope, $http, $ionicLoading, User, qSet) {
     });  
     $http({
       method: 'GET',
-      url: './panel/get'
+      url: './api/users/'+$rootScope.user.uid
     }).then(function successCallback(response) {
-      console.log(response);
-      $rootScope.list = response.data;
-      var companyList = [];
-
-
-      for (var i = 0; i < $rootScope.list.length; i++) {
-        if($rootScope.list[i].company === $rootScope.user.Com){
-          //console.log($rootScope.list[i])
-          if($rootScope.user.First + ' ' + $rootScope.user.Last === $rootScope.list[i].name){
-            console.log('FOUND ' + $rootScope.list[i]);
-            $rootScope.user.seat = $rootScope.list[i].seat;
-            localStorage.setItem("user", JSON.stringify($rootScope.user));
-            $http.put('/listput', $rootScope.user).then(
-              function successCallback(response) {}, 
-              function errorCallback(response) {}
-            );
-            break;
-          }
-        }
-      }
-
-
+      $rootScope.cloudUser = response.data;
+      $rootScope.user.seat = $rootScope.cloudUser.seat
+      $rootScope.user.tool = $rootScope.cloudUser.tool
+      localStorage.setItem("user", JSON.stringify($rootScope.user));
       $ionicLoading.hide();
     }, function errorCallback(response) {});
   };
@@ -52,12 +34,7 @@ app.run(function($rootScope, $http, $ionicLoading, User, qSet) {
       User = JSON.parse(localStorage.getItem("user"));
       $rootScope.user = User;
     }
-    
-    if($rootScope.user.seat === null){
-      console.log($rootScope.user);
-      $rootScope.getList();
-    }
-    //console.log($rootScope.list)
+    $rootScope.getList();
   };
 
   $rootScope.setData = function(){
@@ -69,16 +46,18 @@ app.run(function($rootScope, $http, $ionicLoading, User, qSet) {
       function errorCallback(response) {}
     );
   };
-  $rootScope.getData = function(){
-    //$rootScope.setData();
+  $rootScope.getData = function(callback){
     $http({
       method: 'GET',
-      url: './api/get'
+      url: './api/img'
     }).then(function successCallback(response) {
+      console.log(response.data)
       $rootScope.imgSet = response.data;
+      (callback && typeof(callback) === "function") && callback();
     }, function errorCallback(response) {});
+    
   };
-  $rootScope.setData()
+  //$rootScope.setData()
   $rootScope.getData();
 });
 
@@ -101,7 +80,7 @@ app.controller('uploadCtrl', ['$rootScope', '$scope', 'Upload', '$timeout', '$io
          reader.onload = function(e) {
             // handle onload
             console.log("onload");
-            console.log($scope.file );
+            console.log($scope.file, $rootScope.user );
             $scope.showConfirm(e.target.result);
          };
          reader.readAsDataURL(photofile);
@@ -132,8 +111,8 @@ app.controller('uploadCtrl', ['$rootScope', '$scope', 'Upload', '$timeout', '$io
   $scope.uploadPic = function(file) {
     console.log(file);
     file.upload = Upload.upload({
-      url: '//lvm.swel.tk/api/imgMgt/fileMgt.php',
-      data: {image: file, user: $rootScope.user.First + ' ' + $rootScope.user.Last},
+      url: './api/img/post',
+      data: {image: file, user: $rootScope.user.name},
     });
 
     file.upload.then(function (response) {
@@ -150,7 +129,7 @@ app.controller('uploadCtrl', ['$rootScope', '$scope', 'Upload', '$timeout', '$io
           };
           $scope.showAlert();
         }
-        $rootScope.setData();
+        //$rootScope.setData();
 
       });
     }, function (response) {
@@ -171,11 +150,19 @@ app.controller('uploadCtrl', ['$rootScope', '$scope', 'Upload', '$timeout', '$io
 }]);
 
 app.controller('dashCtrl', function($rootScope, $scope, $http, $ionicModal, socket) {
+  $rootScope.items = [];
+  setInterval($rootScope.getData, 3000);
+  $rootScope.getData(function () {
+    loadImg()
+    $scope.loadMore()
+  });
+  
+  function loadImg(){
+    $rootScope.noMoreItemsAvailable = false;
+    $rootScope.items = [];
+  }
 
-
-
-  $rootScope.noMoreItemsAvailable = false;
-  $rootScope.loadMore = function() {
+  $scope.loadMore = function() {
     $rootScope.items.push($rootScope.imgSet[$rootScope.items.length]);
     if ( $rootScope.items.length == $rootScope.imgSet.length ) {
       $rootScope.noMoreItemsAvailable = true;
@@ -183,76 +170,61 @@ app.controller('dashCtrl', function($rootScope, $scope, $http, $ionicModal, sock
     $rootScope.$broadcast('scroll.infiniteScrollComplete');
     console.log($rootScope.items)
   };
-  $rootScope.items = [];
-  console.log($rootScope.items)
 
-
-
-
-
-  console.log($rootScope.user);
-  function dynamicSort(property) {
-    var sortOrder = 1;
-    if(property[0] === "-") {
-        sortOrder = -1;
-        property = property.substr(1);
+  
+  /*
+    function dynamicSort(property) {
+      var sortOrder = 1;
+      if(property[0] === "-") {
+          sortOrder = -1;
+          property = property.substr(1);
+      }
+      return function (a,b) {
+          var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+          return result * sortOrder;
+      };
     }
-    return function (a,b) {
-        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-        return result * sortOrder;
-    };
-  }
-  //console.log(User)
+  */
 
-  $rootScope.setData()
-  $rootScope.getData();
-  setInterval($rootScope.getData, 3000);
-
-  $scope.updated = 0;
   $scope.$watch('imgSet', function(newValue, oldValue) {
     if(typeof oldValue === 'undefined') { return; }
     if (newValue.length === oldValue.length) { return; }
     console.log('updated');
     $rootScope.items = [];
-    $rootScope.loadMore();
-
+    $rootScope.noMoreItemsAvailable = false;
+    $scope.loadMore();
   });
   $scope.thumbUp = function(key, id, ele) {
     $rootScope.imgSet[key].like++;
     console.log('id: ' + id);
     socket.emit('tUP', { likeIdx: id });
-  };
+  };  
+  socket.on('new', function (data) {
+    //$rootScope.imgSet = data.newSet;
+    console.log(data)
+  });
+  /*
+  //console.log(User)
+
+  //$rootScope.setData()
+  //$rootScope.getData();
+  //console.log($rootScope.imgSet)
+  
+
+
+  */
 });
 
 app.controller('rootCtrl', function($rootScope, $scope, $state, $ionicModal,$http , User) {
-  $scope.selectables = [ 
-  'Cloud',
-  'Watson',
-  'Social', 
-  'Security',
-  'Bluemix',
-  'Verse',
-  'SoftLayer',
-  'Mobile'
-  ];
-  
   $rootScope.user = User;
-  $ionicModal.fromTemplateUrl('root.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  });
-
-  $scope.reg = function() {
-    $scope.modal.show();
-  }; 
-  $scope.cancel = function() {
-    $scope.modal.hide();
-  };  
   $scope.submit = function(user){
+    //console.log(user)
     $rootScope.getUser(true);
-    $scope.modal.hide();
-    $state.go('tab.seat');
+    $state.go('seat');
+  };
+  $rootScope.$ionicGoBack = function() {
+    localStorage.removeItem("user");
+    $state.go('root');
   };
 });
 
@@ -279,7 +251,10 @@ app.controller('videoCtrl', function($rootScope, $scope,$state, $sce) {
 });
 
 app.controller('seatCtrl', function($rootScope, $scope,$state, User) {
-
+  $scope.next  = function () {
+    $state.go('tab.agenda');
+    //console.log($rootScope.user )
+  };
   $rootScope.getUser();
 });
 
@@ -395,6 +370,35 @@ app.controller('comMgt', function($rootScope, $scope, $ionicModal, User, socket)
     socket.emit('postCmt', { imgIdx: id, cmt: $scope.newCmt});
   };
   socket.on('new', function (data) {
-    $rootScope.imgSet = data.newSet;
+    //$rootScope.imgSet = data.newSet;
+    console.log(data)
   });
+});
+
+app.controller('fbCtrl', function($rootScope, $http, $scope, $ionicModal, User, socket) {
+  $scope.send = function(user, text){
+    console.log(user)
+    console.log(text)
+    $http({
+      method: 'POST',
+      url: './api/pi',
+      data: JSON.stringify({user: user.name, text:text, uid: user.uid}),
+      headers: {'Content-Type': 'application/json'}
+    }).then(
+      function successCallback(response) {
+        console.log(response.data)
+      }, 
+      function errorCallback(response) {
+        console.log('er')
+      }
+    );
+
+
+  };
+});
+
+app.controller('drawCtrl', function($rootScope, $http, $scope, $ionicModal, User, socket) {
+  console.log(localStorage.getItem('user'))
+  
+
 });

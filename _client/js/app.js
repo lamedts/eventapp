@@ -43,6 +43,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     controller : 'rootCtrl'
   })
 
+  .state('seat', {
+    url: '/seat',
+    templateUrl: 'templates/tab-seat-popup.html',
+    controller: 'seatCtrl'
+  })
+
   // setup an abstract state for the tabs directive
   .state('tab', {
     url: '/tab',
@@ -50,12 +56,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
     templateUrl: 'templates/tabs.html'
   })
 
-  .state('tab.seat', {
-    url: '/seat',
+  .state('tab.agenda', {
+    url: '/agenda',
     views: {
-      'tab-seat': {
-        templateUrl: 'templates/tab-seat.html',
-        controller: 'seatCtrl'
+      'tab-agenda': {
+        templateUrl: 'templates/tab-agenda.html',
+        //controller: 'seatCtrl'
+      }
+    }
+  })
+
+  .state('tab.draw', {
+    url: '/draw',
+    views: {
+      'tab-draw': {
+        templateUrl: 'templates/tab-draw.html',
+        controller: 'drawCtrl'
       }
     }
   })
@@ -87,7 +103,16 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
           controller: 'qDetailCtrl'
         }
       }
-    });
+    })
+  .state('tab.feedback', {
+      url: '/feedback',
+      views: {
+        'tab-feedback': {
+          templateUrl: 'templates/tab-feedback.html',
+          controller: 'fbCtrl'
+        }
+      }
+    });  
 
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/root');
