@@ -7,8 +7,8 @@
           <img ng-src="{{img.url}}" ng-click="showImages($event, 'img')">
         </div>
         <div class="item item-divider" >
-          <span class="button button-small" ng-click="thumbUp(key, img.id)">{{imgLikeSet[img.id]}} Like</span>
-          <span class="button button-small" ng-click="showImages($event, 'cmt', img.id)">{{imgCmtSet[img.id].length}} Comments</span>
+          <span class="button button-small" ng-click="thumbUp(key, img.id, likeSet[key].like)">{{imgSet[key].like}} Like</span>
+          <span class="button button-small" ng-click="showImages($event, 'cmt', key)">{{imgSet[key].comment.length}} Comments</span>
         </div>
         <a class="item item-icon-left" ng-repeat="(key, comment) in items[key].comment track by $index">
           <i class="icon ion-chatbubble"></i>
@@ -22,18 +22,18 @@
     <div class="col">
       <button class="button button-circle button-positive icon ion-android-upload" ng-click="openFileDialog()"></button>
     </div>
-    
+
     <form name="uploadForm">
       <input id="file" type="file" ngf-select ng-model="picFile" name="file" accept="image/*"  required ngf-model-invalid="errorFiles" onchange="angular.element(this).scope().fileAdded(this)">
       <!--<br><span ng-show="!file">Sorry, the field is empty!</span>-->
       <!--<br><span ng-show="file">Successfully validated!</span> -->
-      <br>  
+      <br>
       <!--<input ng-show="file" type="submit" ng-click="uploadPic(picFile)" /> -->
       <input ng-show="false" type="submit" ng-click="uploadPic(picFile)" />
-      <br>  
+      <br>
       <!--<span ng-show="picFile.result">Upload Successful</span>-->
       <!--<span class="err" ng-show="errorMsg">{{errorMsg}}</span>-->
-    </form> 
+    </form>
   </div>
 </ion-view>
 <script id="templates/loading.html" type="text/ng-template">
@@ -41,4 +41,3 @@
   <br />
   <span>{{progress}} Loading...</span>
 </script>
-

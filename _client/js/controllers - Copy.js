@@ -417,7 +417,6 @@ app.controller('fbCtrl', function($rootScope, $http, $scope, $ionicModal, User, 
 
 app.controller('drawCtrl', function($rootScope, $http, $scope, $ionicModal, User, socket, $filter) {
 
-  $scope.luckyDisabled = true; // disable draw lucky guy button
   var userItem = JSON.parse(localStorage.getItem('user'));
   console.log(userItem);
   $scope.tool = userItem.tool;
@@ -425,10 +424,11 @@ app.controller('drawCtrl', function($rootScope, $http, $scope, $ionicModal, User
   console.log('retrieve drawlist');
   $rootScope.getUserList();
   var userList = JSON.parse(localStorage.getItem('userList'));
-
+  //  console.log(userList);
+  // console.log(userList.length);
   var reverse = false;
   var drawList = $filter('orderBy')(userList, 'table', reverse);
-
+  // console.log(drawList);
   var drawLists = []; // a list of drawList separated according to table
   var j=0;
   drawLists[j] = [];
@@ -450,207 +450,174 @@ app.controller('drawCtrl', function($rootScope, $http, $scope, $ionicModal, User
       console.log(drawLists[i][k]);
     }
   }
-  var tableCount = drawLists.length;
-  var maxTableLength = 0;
-  for (var i=0; i<drawLists.length; i++){
-  	if (drawLists[i].length > maxTableLength)
-  		maxTableLength = drawLists[i].length;
-  }
-  initializeSlotList(maxTableLength, tableCount);
 
   $scope.luckyList = [];
+  // $scope.luckyList.push(drawLists[0][0]);
+  // $scope.lucky="Anson Leung";
   maxDraw = 4;
   $scope.drawCount = maxDraw;
 
-  
-  var tableList;
   var luckyTable;
   var lucky;
-  var luckyPos = 1;
-  $scope.startDrawTable = function(){
-  	if ($scope.drawCount > 0){
-	  $scope.tableDisabled = true;
-	  $scope.luckyDisabled = true;
-	  console.log("Start lucky draw");
-	  var luckyTableNumber = Math.floor(Math.random()*drawLists.length);
-	  console.log("Lucky Table: "+luckyTableNumber);
-	  luckyTable = drawLists[luckyTableNumber];
-
-	  tableList = [];
-	  for (var i=0; i<drawLists.length; i++){
-	  	tableList.push(drawLists[i][0].table);
-	  }
-	  // swap with the table that originally in luckyPos
-	  var temp = tableList[luckyPos];
-	  tableList[luckyPos] = tableList[luckyTableNumber];
-	  tableList[luckyTableNumber] = temp;
-
-	  console.log(drawLists);
-	  drawLists.splice(luckyTableNumber, 1); // the table where lucky guy will be chosen
-
-	  console.log(drawLists);
-	  console.log(luckyTable);
-	  lucky = Math.floor(Math.random()*luckyTable.length);
-	  // swap with the guy that originally in luckyPos
-	  var temp = luckyTable[luckyPos];
-	  luckyTable[luckyPos] = luckyTable[lucky];
-	  luckyTable[lucky] = temp;
-
-	  loopTime = luckyTable.length*1000;
-
-	  makeTableSlots();
-	  // makeSlots();
-	  
-	  if ($scope.drawCount == 0)
-	  	$scope.tableDisabled = true;
-    }else{
-      	$scope.tableDisabled = true;
-    }
-  }
   $scope.startDraw = function(){
-  	$scope.tableDisabled = true;
-  	$scope.luckyDisabled = true;
-  	if ($scope.drawCount > 0){
-  		makeSlots();
-  		$scope.drawCount--;
-  		if ($scope.drawCount == 0)
-  			$scope.disabled = true;
-  	}else{
-  		$scope.disabled = true;
-  	}
+    // console.log($scope.drawCount);
+    if ($scope.drawCount > 0){
+      $scope.disabled = false;
+      console.log("Start lucky draw");
+      var luckyTableNumber = Math.floor(Math.random()*drawLists.length);
+      console.log("Lucky Table: "+luckyTableNumber);
+      luckyTable = drawLists[luckyTableNumber];
+      msa = luckyTable.slice();
+      console.log(drawLists);
+      drawLists.splice(luckyTableNumber, 1); // the table where lucky guy will be chosen
+      console.log(drawLists);
+      console.log(luckyTable);
+      // var lucky = Math.floor(Math.random()*luckyTable.length);
+      // luckyTable[lucky].count = maxDraw - $scope.drawCount + 1;
+      // $scope.luckyList.reverse();
+      // $scope.luckyList.push(luckyTable[lucky]);
+      // $scope.luckyList.reverse();
+      // console.log($scope.luckyList);
+      // loopCount = luckyTable.length;
+      loopTime = luckyTable.length*1000;
+      console.log("loop time "+loopTime);
+      $scope.drawCount--;
+      if ($scope.drawCount == 0)
+      $scope.disabled = true;
+    }else{
+      $scope.disabled = true;
+    }
   };
 
-  
+
+  var msa/*[
+      { name: "Abilene, TX" },
+      { name: "Akron, OH" },
+      { name: "Albany, GA" },
+      { name: "Albany, OR" },
+      { name: "Albany-Schenectady-Troy, NY" },
+      { name: "Albuquerque, NM" },
+      { name: "Alexandria, LA" },
+      { name: "Allentown-Bethlehem-Easton, PA-NJ" },
+      { name: "Altoona, PA" },
+      { name: "Amarillo, TX" },
+      { name: "Ames, IA" },
+      { name: "Anchorage, AK" },
+      { name: "Ann Arbor, MI" },
+      { name: "Anniston-Oxford-Jacksonville, AL" },
+      { name: "Appleton, WI" },
+      { name: "Asheville, NC" },
+      { name: "Athens-Clarke County, GA" },
+      { name: "Atlanta-Sandy Springs-Roswell, GA" },
+      { name: "Atlantic City-Hammonton, NJ" },
+      { name: "Auburn-Opelika, AL" },
+      { name: "Augusta-Richmond County, GA-SC" },
+      { name: "Austin-Round Rock, TX" },
+      { name: "Bakersfield, CA" },
+      { name: "Baltimore-Columbia-Towson, MD" },
+      { name: "Bangor, ME" },
+      { name: "Barnstable Town, MA" },
+      { name: "Baton Rouge, LA" },
+      { name: "Battle Creek, MI" },
+      { name: "Bay City, MI" },
+      { name: "Beaumont-Port Arthur, TX" },
+      { name: "Beckley, WV" },
+      { name: "Bellingham, WA" },
+      { name: "Bend-Redmond, OR" },
+      { name: "Billings, MT" },
+      { name: "Binghamton, NY" },
+      { name: "Birmingham-Hoover, AL" },
+      { name: "Bismarck, ND" },
+      { name: "Blacksburg-Christiansburg-Radford, VA" },
+      { name: "Bloomington, IL" },
+      { name: "Bloomington, IN" },
+      { name: "Bloomsburg-Berwick, PA" },
+      { name: "Boise City, ID" },
+      { name: "Boston-Cambridge-Newton, MA-NH" },
+      { name: "Boulder, CO" },
+      { name: "Bowling Green, KY" },
+      { name: "Bremerton-Silverdale, WA" },
+      { name: "Bridgeport-Stamford-Norwalk, CT" }
+    ]*/,
+    $input = $('input'),
+    random_index, loopTime;
+
+
   // for jSlot
-  var $input = $('#luckyInput');
-  var $tableInput = $('#tableInput');
-  makeTableSlots = function(){
-      //start with current value
-      var list = [];
-      for (var i=0; i<tableList.length; i++){
-      	list.push('<li>Table '+tableList[i]+'</li>');
+
+  //make list for slots recursively and call spin when complete
+  function makeSlotList(list){
+
+  	// $(".scroll").css("height", 1);
+  	// $(".jSlots-wrapper").css("display", "block");
+  	// $(".jSlots-wrapper").css("height", 500);
+  	//could choose one random index and then populate with next 18 values instead, but need to account for looping at end
+  	console.log("Size: "+luckyTable.length)
+      if(list.length<=luckyTable.length){//length chosen based on appearance of spin, can be changed
+          var index = _.random(msa.length-1);
+          if(list.length===1){
+          	/*
+          		This index will be second item in the list, which is our winning number
+          		Save this for future reference
+				Instead of saving it, we could get the index attribute from the list item we end on
+			*/
+              random_index = index;
+              lucky = index;
+              luckyTable[lucky].count = maxDraw - $scope.drawCount;
+			  $scope.luckyList.reverse();
+			  $scope.luckyList.push(luckyTable[lucky]);
+			  $scope.luckyList.reverse();
+			  console.log($scope.luckyList);
+          }
+          list.push( '<li index='+index+'>'+msa[index].name+'</li>' );
+          msa.splice(index, 1);
+          return makeSlotList(list);
+      } else {
+          //slot list is complete
+          //clear search field
+          $input.val('');
+          //attach list, show jslots, run animation
+          $('#slot').html(list.join('')).parent().show().trigger('spin');
+          return list;
       }
-
-      // if the list length is still smaller than spinner size, fill it up
-      var a=0;
-      while(list.length < tableCount){
-      	list.push('<li>Table '+tableList[a]+'</li>');
-      	a = (a+1)%tableList.length;
-      }
-      console.log(tableList);
-
-
-      //slot list is complete
-      //clear search field
-      $tableInput.val('');
-      //attach list, show jslots, run animation
-      $('#tableSlot').html(list.join('')).parent().show().trigger('spinTable');
   }
 
   //before spinning, build out list to spin through and insert into the DOM
-  makeSlots = function(){
+  $scope.makeSlots = function(){
       //start with current value
-      var list = [];
-      for (var i=0; i<luckyTable.length; i++){
-      	list.push('<li>'+luckyTable[i].name+'</li>');
-      }
+      var list = ['<li>'+$input.val()+'</li>'];
 
-      // if the list length is still smaller than spinner size, fill it up
-      var a=0;
-      while(list.length < maxTableLength){
-      	list.push('<li>'+luckyTable[a].name+'</li>');
-      	a = (a+1)%luckyTable.length;
-      }
-
-      //slot list is complete
-      //clear search field
-      $input.val('');
-      //attach list, show jslots, run animation
-      $('#slot').html(list.join('')).parent().show().trigger('spin');
+      //call recursive list builder that won't spin slots until it's finished
+      makeSlotList(list);
   }
 
   $('#slot').jSlots({
       number: 1,
       spinner : '.jSlots-wrapper',
       spinEvent: 'spin',
-      time: 6000,
-      loops: 5,
+      time: loopTime,
+      loops: 4,
       endNum: 2,//spins backwards through the list. endNum 1 ends on the same value we started on
       onEnd: function(finalElement){
           //set result
-          $input.val(luckyTable[luckyPos].name);
+          $input.val(msa[random_index].name);
           $input.css("font-size", 16);
           $input.css("font-weight", "normal");
-          $input.css("padding-up", 6-1);
-          $input.css("padding-bottom", 6-1);
-          $input.css("padding-left", 6-1);
-          $input.css("padding-right", 4-1);
-
-          luckyTable[luckyPos].count = maxDraw - $scope.drawCount;
-		  $scope.luckyList.reverse();
-		  $scope.luckyList.push(luckyTable[luckyPos]);
-		  $scope.luckyList.reverse();
-
-		  if ($scope.drawCount != 0)
-		  	$scope.tableDisabled = false;
-		  $scope.luckyDisabled = true;
-		  $scope.$apply();
+          $input.css("padding-up", 6);
+          $input.css("padding-bottom", 6);
+          $input.css("padding-left", 6);
+          $input.css("padding-right", 4);
 
 
           //hide spinner
           $(this.spinner).hide();
-          
       }
   });
 
-  $('#tableSlot').jSlots({
-      number: 1,
-      spinner : '.jSlots-wrapper',
-      spinEvent: 'spinTable',
-      time: 2400,
-      loops: 2,
-      endNum: 2,//spins backwards through the list. endNum 1 ends on the same value we started on
-      onEnd: function(finalElement){
-          //set result
-          // console.log(tableList);
-          
-          $tableInput.val("Table "+tableList[luckyPos]);
-          $tableInput.css("font-size", 16);
-          $tableInput.css("font-weight", "normal");
-          $tableInput.css("padding-up", 6-1);
-          $tableInput.css("padding-bottom", 6-1);
-          $tableInput.css("padding-left", 6-1);
-          $tableInput.css("padding-right", 4-1);
-
-          $scope.tableDisabled = true;
-          $scope.luckyDisabled = false;
-          $scope.$apply();
-          //hide spinner
-          $(this.spinner).hide();
-          
-          console.log("enable draw button");
-      }
-  });
-
-  function initializeSlotList(maxTableLength, tableCount){
-  	$('#tableSlot').empty();
-  	$('#tableSlot').append('<li>test</li>');
-  	for (var i=0; i<tableCount-1; i++){
-  		$('#tableSlot').append('<li>&nbsp;</li>');
-  	}
-
-  	$('#slot').empty();
-  	console.log($('slot').length);
-  	$('#slot').append('<li>test</li>');
-  	for (var i=0; i<maxTableLength-1; i++){
-  		$('#slot').append('<li>&nbsp;</li>');
-  		console.log("append slot");
-  	}
-  	console.log($('slot').length);
-  	console.log("table length: "+maxTableLength);
-  }
       //bind random button
       // $('#random_location').on('click', makeSlots);
+
+
 //   $scope.getOrdinal = function(n) {
 //    var s=["th","st","nd","rd"],
 //        v=n%100;

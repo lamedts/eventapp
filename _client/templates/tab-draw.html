@@ -1,7 +1,7 @@
 <ion-view view-title="IBM">
   <ion-content class="padding">
 
-<div class="list card">
+<!-- <div class="list card">
   <div class="item item-divider">
     <div class="col">Table</div>
   </div>
@@ -19,10 +19,41 @@
   <div class="item item-body">
     <div class="col">S1</div>
   </div>
-</div>
-  <button class="button button-stable button-full"  ng-click="emit()" style="color: #5f98e7">
-  Save
-  </button>
+</div> -->
 
+<div id="slot_wrapper">
+    <input id="tableInput" type="text" class="search" style="border-style: solid; border-width: 1px; width: 100%; border-color: blue"; readonly>
+    <ul id="tableSlot">
+      <!-- Initial list needs the height it will have when filled for jSlots to run correctly. You could fill with real values instead -->
+      <li>test</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li>
+    </ul>
+</div>
+
+<div id="slot_wrapper">
+    <input id="luckyInput" type="text" class="search" style="border-style: solid; border-width: 1px; width: 100%; border-color: blue" readonly>
+    <ul id="slot">
+    	<!-- Initial list needs the height it will have when filled for jSlots to run correctly. You could fill with real values instead -->
+    	<li>test</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li>
+    </ul>
+</div>
+
+<!-- <button type="button" id="random_location">Pick a city</button> -->
+
+<font>Remaining Draw : {{drawCount}}</font>
+
+<div class="button-bar" ng-disabled="disabled">
+  <a ng-show="tool" ng-disabled="tableDisabled" ng-click="startDrawTable()" class="button button-block button-outline button-energized">Draw Lucky Table !</a>
+  <a ng-show="tool" ng-disabled="luckyDisabled" ng-click="startDraw()" class="button button-block button-outline button-assertive">Draw Lucky Guy !</a>
+</div>
+
+<div class="list">
+  <a class="item item-avatar" ng-repeat="(key, lucky) in luckyList">
+    <img src=img/lucky_{{lucky.count}}.png>
+    <h2>{{lucky.name}}</h2>
+    <p>Table {{lucky.table}}</p>
+  </a>
+</div>
+
+<button ng-show="chosen" class="button button-positive button-full">Congratulations !</button>
   </ion-content>
 </ion-view>

@@ -4,24 +4,22 @@
 		<div class="list card">
       <div class="item"  style="padding-bottom: 0">
         <form  name="regForm">
-        <!--
           <label class="item item-input">
             <span class="input-label">Name</span>
             <input type="text" placeholder="John" ng-model="user.name" required>
           </label>
-          -->
           <label class="item item-input">
             <span class="input-label">S/N</span>
             <input type="text" placeholder="0000" ng-model="user.uid" required>
           </label>
 
-          <div class = "row center">
-          <div class="col text-right">
-          <button class="button button-light button-large"  ng-click="submit(user);closeModal()" style="color: #5f98e7">
-          Submit
-          </button>
-          </div>
-          </div>
+<div class = "row center">
+<div class="col text-right">
+<button class="button button-light button-large"  ng-click="submit(user);closeModal()" style="color: #5f98e7">
+Submit
+</button>
+</div>
+</div>
         </form>
       </div>
       <button class="button button-full button-small button-light" ng-click="closeModal()">

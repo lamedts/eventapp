@@ -1,7 +1,7 @@
 <ion-view view-title="Seat Info">
-  <ion-content class="padding" >
+  <ion-content class="padding">
 
-<div class="list card" >
+<div class="list card">
 
   <div class="item item-avatar ">
     <img src="../img/user.png">
@@ -9,28 +9,24 @@
     <h2><strong>Welcome to Cognitive Era</strong></h2>
   </div>
 
-  <div class="item item-divider" >
-    <div class="row" ng-show="showUserInfo && foundUser">
+  <div class="item item-divider">
+    <div class="row">
       <div class="col">Name:</div>
       <div class="col">{{user.name}}</div>
     </div>
-    <div class="row" ng-show='showUserInfo && foundUser'>
+    <div class="row">
       <div class="col">Table: </div>
       <div class="col">{{user.seat}}</div>
-    </div>  
-    <div class="row" ng-show='showUserInfo && !foundUser'>
-      <div class="col">Not Found </div>
-      <div class="col">Try again</div>
-    </div>        
+    </div>    
   </div>
 
-  <div class="item item-body" ng-show='showUserInfo'>
+  <div class="item item-body" >
     <img ng-if="user.seat %2 == 1"class="full-image" src="../img/blue.png" ng-click="showImages($event, 'img')">
     <img ng-if="user.seat %2 == 0" class="full-image" src="../img/red.png" ng-click="showImages($event, 'img')">
   </div>
 
 </div>
-<button class="list card button button-block button-stable" ng-click="next()" ng-show='foundUser'>
+<button class="list card button button-block button-stable" ng-click="next()">
   Next
 </button>
   </ion-content>
