@@ -60,15 +60,15 @@ var qSet 		= require('./routes/qSet'),
 //			set app
 //*******************************
 //	Cross-Origin Resource Sharing
-app.all('*', function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "X-Requested-With");
-	next();
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
 });
 //	client use
-//app.use(express.static('_internal/public'));
-//app.set('views', path.join(__dirname, '/_internal/view'));
-//app.set('view engine', 'jade');
+app.use(express.static('_internal/public'));
+app.set('views', path.join(__dirname, '/_internal/view'));
+app.set('view engine', 'jade');
 //	internal use
 app.use(express.static('_client'));
 app.use(bodyParser.json());
@@ -91,6 +91,8 @@ app.get('/qSet', qSet.findAll);
 app.get('/api/users', usersInfo.getUserList)
 app.get('/api/users/:uid', usersInfo.getUserInfo)
 app.get('/api/img', imgInfo.getImg)
+app.get('/api/img/like', imgInfo.getImgLike)
+app.get('/api/img/comment', imgInfo.getImgCmt)
 app.get('/api/img/:iid', imgInfo.getImg)
 app.post('/api/img/post', multipartyMiddleware, imgInfo.postImg)
 app.post('/api/pi', function(req, res){
@@ -101,28 +103,11 @@ app.post('/api/pi', function(req, res){
 		else res.send(JSON.stringify(response, null, 2));
 	});
 })
-app.get('/test/api', function(req, res){
 
-var nano = require('nano')(global.nosql);
-var cloudant_db = 'img'
-var ndb = nano.db.use(cloudant_db);
-
-/*
-ndb.get('20_06_2016_130050-e', function(error, body){
-	console.log(body)
-	ndb.insert({ _id: '20_06_2016_130050-e', _rev: body._rev, crazy: false }, function(err, body) {
-	  if (!err)
-	    console.log(body)
-	})
-})
-*/
-console.log(global.img_like)
-
-})
 
 //app.use('/panel', auth.connect(basic));
 app.get('/panel', panel.index);
-app.get('/panel/ctrl', panel.ctrl);
+//app.get('/panel/ctrl', panel.ctrl);
 app.get('/panel/get', panel.getInfo);
 app.get('/panel/test', panel.test);
 //app.get('/panel/init', panel.set);
@@ -151,59 +136,25 @@ server.listen(app.get('port'), function () {
 //*******************************
 //			socket.io
 //*******************************
-
 io.on('connection', function (socket) {
+
+	console.log('connect')
+	io.sockets.emit('new')
+	socket.on('disconnect', function() { 
+		console.log('disconnect')
+	});
+
+	socket.on('uploadImg', function (data) {
+		console.log('incoming img')
+		io.emit('newImg')
+	})
   	socket.on('tUP', function (data) {
-  		//console.log('tup')
-  		//console.log(global.img_like)
   		console.log(data)
   		global.img_like[data.iid]++
-  		//console.log(global.img_like)
-  		socket.emit('new', { newSet: global.img_like });
-  		//console.log(global.img_like)
-  		/*
-	    for (var i = global.imgJson.length - 1; i >= 0; i--) {
-	    	if(global.imgJson[i].id === data.likeIdx)
-	    		global.imgJson[i].like++;
-	    	
-	    }
-	    console.log(global.imgJson);
-	    
-		var url = "https://ivm.swel.tk/test.php"
-		request({
-		    url: url,
-		    method: "POST",
-		    json: true,
-    		body: global.imgJson
-		}, function (error, response, body) {
-			console.log(response)
-			console.log(body)
-		})
-
-
-	    socket.emit('new', { newSet: global.imgJson });
-	    */
+  		io.emit('newLike', { newSet: global.img_like });
   	});
   	socket.on('postCmt', function (data) {
-	    for (var i = global.imgJson.length - 1; i >= 0; i--) {
-	    	if(global.imgJson[i].id === data.imgIdx)
-	    		global.imgJson[i].comment.push(data.cmt);
-	    	//console.log(global.imgJson);
-	    }
-	    //console.log(global.imgJson);
-
-		var url = "https://ivm.swel.tk/test.php"
-		request({
-		    url: url,
-		    method: "POST",
-		    json: true,
-    		body: global.imgJson
-		}, function (error, response, body) {
-			console.log(response)
-			console.log(body)
-		})
-
-	    socket.emit('new', { newSet: global.imgJson });
-	    
+  		global.img_comment[data.iid].push(data.cmt)
+	    io.emit('newCmt', { newSet: global.img_comment });
   	});
 });

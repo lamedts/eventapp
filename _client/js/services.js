@@ -7,7 +7,7 @@ app.factory('qSet', function ($resource) {
 });
 
 app.factory('socket', ['$rootScope', function($rootScope) {
-  var socket = io.connect();
+  var socket = io.connect()
 
   return {
     on: function(eventName, callback){

@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BB-8 with IBM Watson IoT</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Angular Material style sheet -->
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/css/materialize.min.css">
+    <script src="//cdnjs.cloudflare.com/ajax/libs/materialize/0.97.6/js/materialize.min.js"></script>
+
+    <link rel="stylesheet" href="static/stylesheets/style.css" />
+
+</head>
+<body ng-app="App" ng-cloak>
+
+  <!--Your HTML content START-->  
+  <div class="container" ng-controller="AppCtrl" ng-cloak>
+      <div class="row" >
+        <div class="col s12 m8">
+          <div class="card hoverable">
+            <div class="card-image">
+              <img class="activator" src="{{imagePath}}">
+            </div>
+            <div class="card-content">
+            <span class="card-title activator grey-text text-darken-4">BB-8 with IBM Watson IoT</span>
+              <p>Using an Emotiv Insight, a Sphero BB-8 Droid and IoT services on Bluemix, Joshua Carr demonstrates how you can use your mind to move BB-8 Droids..</p>
+              <div class="divider"></div>
+              <div class="section">
+                <h5>3rd-Party Hardware</h5>
+                <a href="https://emotiv.com/insight.php">Emotiv Insights</a>
+                <br>
+                <a href="http://www.sphero.com/starwars">Sphero BB-8 Droid</a>
+              </div>
+              <div class="divider"></div>
+              <h5>Video</h5>
+              <div class="video-container">
+                <iframe width="853" height="480" src="//www.youtube.com/embed/K-4mp_e5v4A" frameborder="0" allowfullscreen></iframe>
+              </div>
+            </div>
+            <div class="card-action">
+              <a href="bluemix.net" >IBM Bluemix</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="card hoverable">
+            <div class="card-content">
+              <span class="card-title ">Move</span>
+              <p>Calibration</p>
+              <div layout="row" layout-align="space-around center">
+              <a class="waves-effect waves-light btn lamebtn" href="" ng-click="key('start')">Start</a>
+              <a class="waves-effect waves-light btn lamebtn" href="" ng-click="key('end')">End</a>
+              </div>
+            </div>
+            <div class="card-action" layout="column" layout-align="center center">        
+              <p>Use joystick to move the BB8</p>
+              <div layout="column" layout-align="center center">
+                <angular-joystick coords="coords" on-move="joystickMove()" ></angular-joystick> 
+              </div>
+            </div>
+            <div class="card-action" layout="column" layout-align="center center">
+              <p>Use button to move the BB8</p>
+              <div layout="row" layout-align="center center">
+                <div layout="column" layout-align="center center">
+                  <a class="waves-effect waves-light btn lamebtn" href="" ng-click="key('left')">&#9668;</a>
+                </div>
+                <div layout="column" layout-align="center center">
+                  <a class="waves-effect waves-light btn lamebtn" href="" ng-click="key('up')">&#9650;</a>
+                  <a class="waves-effect waves-red btn lamebtn" href="" ng-click="key('stop')">Stop</a>
+                  <a class="waves-effect waves-light btn lamebtn" href="" ng-click="key('down')">&#9660;</a>
+                </div>
+                <div layout="column" layout-align="center center">
+                  <a class="waves-effect waves-light btn lamebtn" href="" ng-click="key('right')">&#9658;</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col s12 m4">
+          <div class="card hoverable">
+            <div class="card-content">
+              <span class="card-title">Color</span>
+                <p>Click the red block to choose the color you want to change, then click CHANGE IT.</p>
+              <br>
+              <div layout="column" layout-align="center center">
+                <input 
+                  type='color' 
+                  id='chooseColor' 
+                  ng-model="color" 
+                  options="{preferredFormat: 'rgb'}" />
+              </div>
+            </div>
+            <div class="card-action" layout="column" layout-align="center center">
+              <a class="waves-effect waves-light btn lamebtn" href="" ng-click="chge()">CHANGE IT!</a>
+            </div>
+          </div>
+        </div>        
+      </div>
+  </div>
+  <!--Your HTML content END-->  
+  
+  <!-- Angular Material requires Angular.js Libraries -->
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js"></script>
+
+  <!-- Angular Material Library -->
+  <script src="//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js"></script>
+  
+<link rel="stylesheet" href="static/color/spectrum.css" />
+<script src="static/color/angular-spectrum-colorpicker.js"></script>
+<script src="static/color/spectrum.js"></script>
+<script src="static/angular-joystick.js"></script>
+<script src="static/ngTouch.min.js"></script>
+
+
+  <!-- Your application bootstrap  -->
+  <script type="text/javascript">    
+    /**
+     * You must include the dependency on 'ngMaterial' 
+     */
+    var app = angular.module('App', ['ngMaterial', "angular-joystick", 'angularSpectrumColorpicker', "ngTouch"]);
+
+    app.controller('AppCtrl', function($scope, $http) {
+      $('.scrollspy').scrollSpy();
+      function hexToRgb(hex) {
+          var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+          return result ? {
+              r: parseInt(result[1], 16),
+              g: parseInt(result[2], 16),
+              b: parseInt(result[3], 16)
+          } : null;
+      }
+
+      $scope.color = '#ff0000'
+      $scope.chge = function () {  
+        console.log(hexToRgb($scope.color))
+        $http.get("/api/change_color?r="+ hexToRgb($scope.color).r +"&g="+ hexToRgb($scope.color).g +"&b="+ hexToRgb($scope.color).b)
+        .then(function(response) {
+            console.log("change color")
+        });
+      };
+      $scope.move = function () {  
+          $http.get("/api/defmove")
+          .then(function(response) {
+              console.log("move")
+          });
+      };
+      $scope.key = function (btn) {  
+          $http.get("/api/key?btn="+ btn)
+          .then(function(response) {
+              console.log(btn)
+          });
+      };      
+      $scope.coords = {x: 0, y: 0}
+      $scope.imagePath = 'static/iotf.jpg';
+      $scope.joystickMove= function (coords) {
+        var deg = Math.atan2($scope.coords.x, $scope.coords.y) * (180 / Math.PI) 
+        var a = deg
+        if(deg < 0) deg += 360
+        //console.log(new Date().getTime() )
+        //if(new Date().getTime() % 1000 == 0) console.log(deg)
+        $http.get("/api/defmove?direction="+ Math.floor(deg))
+        .then(function(response) {
+            console.log("change with deg")
+        });
+      };
+    });
+
+  </script>
+  
+</body>
+</html>
+

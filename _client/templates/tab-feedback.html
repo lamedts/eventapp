@@ -16,14 +16,18 @@
 
 
 
-  <button class="button button-stable button-full"  ng-click="" style="color: #5f98e7">
+  <button class="button button-stable button-full"  ng-show="!analyze" ng-click="save(text)" style="color: #5f98e7">
   Save
   </button>
-  <button class="button button-stable button-full"  ng-click="send(user, text);closeModal()" style="color: #5f98e7">
+  <button class="button button-stable button-full"  ng-show="analyze" ng-click="send(text);closeModal()" style="color: #5f98e7">
   Watson Personality Insight
   </button>  
   <a  class="button button-clear" href="https://personality-insights-livedemo.mybluemix.net/" target="_blank">
     Official Demo
+  </a>
+  <br>
+  <a  class="button button-clear" ng-show='tool' ng-click="toggleBTN()" ng-cloak>
+    Toggle
   </a>
 
 

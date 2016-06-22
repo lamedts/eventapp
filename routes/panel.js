@@ -98,7 +98,7 @@ exports.test = function(req, res){
 
 exports.ctrl = function (req, res, next) {
 
-    res.render('ctrl', { title: 'IBM', qq: combine });
+    //res.render('ctrl', { title: 'IBM', qq: combine });
 };
 
 setList(function(){console.log('reset');});

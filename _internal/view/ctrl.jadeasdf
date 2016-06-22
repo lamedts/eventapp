@@ -1,0 +1,121 @@
+extends ../default/layout
+
+block content
+
+  div(ng-controller='AppCtrl', ng-cloak='')
+      .row
+        .col.s12.m4
+          .card.hoverable
+            .card-image
+              img.activator(src='{{imagePath}}')
+            .card-content
+              span.card-title.activator.grey-text.text-darken-4 Title
+                | Using 
+              .divider
+              .section
+                h5 Title
+                a(href='https://emotiv.com/insight.php') Emotiv Insights
+                br
+                a(href='http://www.sphero.com/starwars') Sphero BB-8 Droid
+              .divider
+              h5 Title
+              .video-container
+                iframe(width='853', height='480', src='//www.youtube.com/embed/K-4mp_e5v4A', frameborder='0', allowfullscreen='')
+            .card-action
+              a(href='bluemix.net') IBM Bluemix
+        .col.s12.m8
+          .card.hoverable
+            .card-content
+              span.card-title Move
+              p Calibration
+              div(layout='row', layout-align='space-around center')
+                a.waves-effect.waves-light.btn.lamebtn(href='', ng-click="key('start')") Start
+                a.waves-effect.waves-light.btn.lamebtn(href='', ng-click="key('end')") End
+            .card-action(layout='column', layout-align='center center')
+              p Use joystick to move the BB8
+              div(layout='column', layout-align='center center')
+                angular-joystick(coords='coords', on-move='joystickMove()')
+            .card-action(layout='column', layout-align='center center')
+              p Use button to move the BB8
+              div(layout='row', layout-align='center center')
+                div(layout='column', layout-align='center center')
+                  a.waves-effect.waves-light.btn.lamebtn(href='', ng-click="key('left')") ◄
+                div(layout='column', layout-align='center center')
+                  a.waves-effect.waves-light.btn.lamebtn(href='', ng-click="key('up')") ▲
+                  a.waves-effect.waves-red.btn.lamebtn(href='', ng-click="key('stop')") Stop
+                  a.waves-effect.waves-light.btn.lamebtn(href='', ng-click="key('down')") ▼
+                div(layout='column', layout-align='center center')
+                  a.waves-effect.waves-light.btn.lamebtn(href='', ng-click="key('right')") ►
+        .col.s12.m8
+          .card.hoverable
+            .card-content
+              span.card-title Color
+              p
+                | Click the red block to choose the color you want to change, then click CHANGE IT.
+              br
+              div(layout='column', layout-align='center center')
+                input#chooseColor(type='color', ng-model='color', options="{preferredFormat: 'rgb'}")
+            .card-action(layout='column', layout-align='center center')
+              a.waves-effect.waves-light.btn.lamebtn(href='', ng-click='chge()') CHANGE IT!
+              
+    script(src='//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular.min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-animate.min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-aria.min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angularjs/1.5.3/angular-messages.min.js')
+    script(src='//ajax.googleapis.com/ajax/libs/angular_material/1.1.0-rc2/angular-material.min.js')
+    link(rel='stylesheet', href='../color/spectrum.css')
+    script(src='../color/angular-spectrum-colorpicker.js')
+    script(src='../color/spectrum.js')
+    script(src='../angular-joystick.js')
+    script(src='../ngTouch.min.js')
+    script(type='text/javascript').
+      /**
+      * You must include the dependency on 'ngMaterial'
+      */
+      var app = angular.module('App', ['ngMaterial', "angular-joystick", 'angularSpectrumColorpicker', "ngTouch"]);
+      app.controller('AppCtrl', function($scope, $http) {
+      $('.scrollspy').scrollSpy();
+      function hexToRgb(hex) {
+      var result = /^#?([a-f\\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+      r: parseInt(result[1], 16),
+      g: parseInt(result[2], 16),
+      b: parseInt(result[3], 16)
+      } : null;
+      }
+      $scope.color = '#ff0000'
+      $scope.chge = function () {
+      console.log(hexToRgb($scope.color))
+      $http.get("/api/change_color?r="+ hexToRgb($scope.color).r +"&g="+ hexToRgb($scope.color).g +"&b="+ hexToRgb($scope.color).b)
+      .then(function(response) {
+      console.log("change color")
+      });
+      };
+      $scope.move = function () {
+      $http.get("/api/defmove")
+      .then(function(response) {
+      console.log("move")
+      });
+      };
+      $scope.key = function (btn) {
+      $http.get("/api/key?btn="+ btn)
+      .then(function(response) {
+      console.log(btn)
+      });
+      };
+      $scope.coords = {x: 0, y: 0}
+      $scope.imagePath = '../img/ibm_icon.jpg';
+      $scope.joystickMove= function (coords) {
+      var deg = Math.atan2($scope.coords.x, $scope.coords.y) * (180 / Math.PI)
+      var a = deg
+      if(deg < 0) deg += 360
+      $http.get("/api/defmove?direction="+ Math.floor(deg))
+      .then(function(response) {
+      console.log("change with deg")
+      });
+      };
+      });
+
+
+

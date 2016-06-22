@@ -7,8 +7,8 @@
           <img ng-src="{{img.url}}" ng-click="showImages($event, 'img')">
         </div>
         <div class="item item-divider" >
-          <span class="button button-small" ng-click="thumbUp(key, img.id, likeSet[key].like)">{{imgSet[key].like}} Like</span>
-          <span class="button button-small" ng-click="showImages($event, 'cmt', key)">{{imgSet[key].comment.length}} Comments</span>
+          <span class="button button-small" ng-click="thumbUp(key, img.id)">{{imgLikeSet[img.id]}} Like</span>
+          <span class="button button-small" ng-click="showImages($event, 'cmt', img.id)">{{imgCmtSet[img.id].length}} Comments</span>
         </div>
         <a class="item item-icon-left" ng-repeat="(key, comment) in items[key].comment track by $index">
           <i class="icon ion-chatbubble"></i>

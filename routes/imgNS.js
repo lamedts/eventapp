@@ -2,7 +2,7 @@
 var cloudant_db = 'img'
 var nano = require('nano')(global.nosql);
 var ndb = nano.db.use(cloudant_db);
-console.log(global.nosql)
+//console.log(global.nosql)
 var moment = require('moment');
 var fs = require('fs');
 var stream = require('stream');
@@ -20,7 +20,6 @@ function dynamicSort(property) {
 }
 //https://tonyspiro.com/uploading-and-resizing-an-image-using-node-js/
 exports.getImg = function(req, res, next){
-  
   if(req.params.iid){
     	var iid = req.params.iid;
       // alice.attachment.get('rabbit', 'rabbit.png', function(err, body) {
@@ -44,12 +43,14 @@ exports.getImg = function(req, res, next){
 
 			if (!err) {
 				body.rows.forEach(function(doc) {
-					doc_ary.push({id: doc.doc._id, user: doc.doc.user,time: doc.doc.time, url: req.protocol + '://' + req.get('host') + req.originalUrl + '/' + doc.id, like: doc.doc.like, comment: doc.doc.comment})
-				  global.img_like[doc.doc._id] = doc.doc.like
-          global.img_comment[doc.doc._id] = doc.doc._id
+					doc_ary.push({id: doc.doc._id, user: doc.doc.user,time: doc.doc.time, url: req.protocol + '://' + req.get('host') + req.originalUrl + '/' + doc.id})				  
+          if(typeof global.img_like[doc.doc._id] === 'undefined' || global.img_like[doc.doc._id] === null ){             
+            global.img_like[doc.doc._id] = 0
+            global.img_comment[doc.doc._id] =[]
+            console.log('new IMG')
+          }
         });
 			}
-      //console.log()
       global.imgList = doc_ary.sort(dynamicSort("-time"))
 			res.send(global.imgList);
 		});
@@ -62,7 +63,7 @@ exports.postImg = function(req, res, next){
   fs.readFile(req.files.image.path, function (err, data) {
       if (!err) {
         ndb.multipart.insert(
-          { name: newName, time: moment().format('DD_MM_YYYY_HHmm'), user: req.body.user, like: 0,comment: [] }, 
+          { name: newName, time: moment().format('DD_MM_YYYY_HHmmss'), user: req.body.user }, 
           [{name: 'img', data: data, content_type: req.files.image.type}], 
           newName, 
         function(err, body) {
@@ -72,8 +73,6 @@ exports.postImg = function(req, res, next){
           }
           console.log(body);
           res.send('Success, org')
-          console.log('fhj')
-
         });
       }else{
         console.log('[error] - read err')
@@ -81,4 +80,12 @@ exports.postImg = function(req, res, next){
       }
 
   });
+};
+
+exports.getImgLike = function(req, res, next){
+  res.send(global.img_like)
+};
+
+exports.getImgCmt = function(req, res, next){
+  res.send(global.img_comment)
 };

@@ -4,6 +4,8 @@
 var app = angular.module('starter.controllers', ['ngFileUpload', 'ionic', 'ionic-modal-select', 'ngMaterial', 'ngMessages']);
 
 app.run(function($rootScope, $http, $ionicLoading, User, qSet) {
+  $rootScope.showUserInfo = false
+  $rootScope.foundUser = false
   qSet.query(function(response){ 
     $rootScope.allQ = response;
   });
@@ -15,11 +17,21 @@ app.run(function($rootScope, $http, $ionicLoading, User, qSet) {
       method: 'GET',
       url: './api/users/'+$rootScope.user.uid
     }).then(function successCallback(response) {
-      $rootScope.cloudUser = response.data;
-      $rootScope.user.seat = $rootScope.cloudUser.seat
-      $rootScope.user.tool = $rootScope.cloudUser.tool
-      localStorage.setItem("user", JSON.stringify($rootScope.user));
+      if(response.data !== 'Not Found'){
+        $rootScope.cloudUser = response.data;
+        $rootScope.user.seat = $rootScope.cloudUser.seat
+        $rootScope.user.tool = $rootScope.cloudUser.tool
+        $rootScope.user.name = $rootScope.cloudUser.name
+        localStorage.setItem("user", JSON.stringify($rootScope.user));
+        console.log($rootScope.user)
+        $rootScope.foundUser = true
+      }else{
+
+        $rootScope.noUser = 'Not Found, Try again'
+      }
       $ionicLoading.hide();
+      $rootScope.showUserInfo = true
+      //$rootScope.$apply()
     }, function errorCallback(response) {});
   };
   $rootScope.getUser = function(newUser){
@@ -55,13 +67,41 @@ app.run(function($rootScope, $http, $ionicLoading, User, qSet) {
       $rootScope.imgSet = response.data;
       (callback && typeof(callback) === "function") && callback();
     }, function errorCallback(response) {});
+
+    $http({
+      method: 'GET',
+      url: './api/img/like'
+    }).then(function successCallback(response) {
+      console.log(response.data)
+      $rootScope.imgLikeSet = response.data;
+      (callback && typeof(callback) === "function") && callback();
+    }, function errorCallback(response) {});
+
+    $http({
+      method: 'GET',
+      url: './api/img/comment'
+    }).then(function successCallback(response) {
+      console.log(response.data)
+      $rootScope.imgCmtSet = response.data;
+      (callback && typeof(callback) === "function") && callback();
+    }, function errorCallback(response) {});
     
   };
   //$rootScope.setData()
   $rootScope.getData();
+  $rootScope.safeApply = function(fn) {
+    var phase = this.$root.$$phase;
+    if(phase == '$apply' || phase == '$digest') {
+        if(fn && (typeof(fn) === 'function')) {
+            fn();
+        }
+    } else {
+        this.$apply(fn);
+    }
+  };
 });
 
-app.controller('uploadCtrl', ['$rootScope', '$scope', 'Upload', '$timeout', '$ionicLoading', '$ionicPopup', '$state', '$window', function ($rootScope, $scope, Upload, $timeout, $ionicLoading, $ionicPopup, $state, $window) {
+app.controller('uploadCtrl', ['$rootScope', '$scope', 'Upload', '$timeout', '$ionicLoading', '$ionicPopup', '$state', '$window', 'socket', function ($rootScope, $scope, Upload, $timeout, $ionicLoading, $ionicPopup, $state, $window, socket) {
   $rootScope.getUser();
   $scope.file = '';
   $scope.progress = 0;
@@ -119,6 +159,7 @@ app.controller('uploadCtrl', ['$rootScope', '$scope', 'Upload', '$timeout', '$io
       $timeout(function () {
         file.result = response.data;
         console.log(response);
+        socket.emit('uploadImg');
         $ionicLoading.hide();
         if(response.data.substring(0, 7) !== 'Success'){
           $scope.showAlert = function() {
@@ -136,8 +177,8 @@ app.controller('uploadCtrl', ['$rootScope', '$scope', 'Upload', '$timeout', '$io
       if (response.status > 0) $scope.errorMsg = response.status + ': ' + response.data;
     }, function (evt) {
       $scope.loading = $ionicLoading.show({
-      templateUrl:"templates/loading.html"
-    });
+        templateUrl:"templates/loading.html"
+      });
       // Math.min is to fix IE which reports 200% sometimes
       file.progress = Math.min(100, parseInt(100.0 * evt.loaded / evt.total));
       $scope.progress = file.progress;
@@ -149,9 +190,10 @@ app.controller('uploadCtrl', ['$rootScope', '$scope', 'Upload', '$timeout', '$io
   };
 }]);
 
-app.controller('dashCtrl', function($rootScope, $scope, $http, $ionicModal, socket) {
+app.controller('dashCtrl', function($rootScope, $scope, $http, $ionicModal,$timeout, socket) {
   $rootScope.items = [];
-  setInterval($rootScope.getData, 3000);
+  $scope.imgCmt = {}
+
   $rootScope.getData(function () {
     loadImg()
     $scope.loadMore()
@@ -170,49 +212,55 @@ app.controller('dashCtrl', function($rootScope, $scope, $http, $ionicModal, sock
     $rootScope.$broadcast('scroll.infiniteScrollComplete');
     console.log($rootScope.items)
   };
-
   
-  /*
-    function dynamicSort(property) {
-      var sortOrder = 1;
-      if(property[0] === "-") {
-          sortOrder = -1;
-          property = property.substr(1);
-      }
-      return function (a,b) {
-          var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-          return result * sortOrder;
-      };
-    }
-  */
-
-  $scope.$watch('imgSet', function(newValue, oldValue) {
-    if(typeof oldValue === 'undefined') { return; }
-    if (newValue.length === oldValue.length) { return; }
-    console.log('updated');
+  socket.on('newImg', function (data) {
+    console.log('have incoming img')
+    $rootScope.getData()
+    $rootScope.$apply();
     $rootScope.items = [];
     $rootScope.noMoreItemsAvailable = false;
     $scope.loadMore();
   });
-  $scope.thumbUp = function(key, id, ele) {
-    $rootScope.imgSet[key].like++;
-    console.log('id: ' + id);
-    socket.emit('tUP', { iid: id });
-  };  
-  socket.on('new', function (data) {
-    //$rootScope.imgSet = data.newSet;
-    console.log(data)
-  });
-  /*
-  //console.log(User)
-
-  //$rootScope.setData()
-  //$rootScope.getData();
-  //console.log($rootScope.imgSet)
   
+  $scope.$watch('imgSet', function(newValue, oldValue) {
+    if(typeof oldValue === 'undefined') { return; }
+    if (newValue.length === oldValue.length) { return; }
+    console.log('updated');
+    $rootScope.getData()
+    //$timeout(function () {
+    $rootScope.items = [];
+    $rootScope.noMoreItemsAvailable = false;
+    $scope.loadMore();
+    //}, 2000);
 
+  });
+  
+  socket.on('newCmt', function (data) {
+    console.log(data)
+    $rootScope.imgCmtSet = data.newSet
+    $rootScope.$apply();
+  });
 
-  */
+  socket.on('newLike', function (data) {
+    console.log(data)
+    $rootScope.imgLikeSet = data.newSet
+    $rootScope.$apply();
+  });  
+  $scope.thumbUp = function(key, iid) {
+    socket.emit('tUP', { iid: iid });
+  }; 
+  /*************
+  socket.on('new', function () {
+    console.log('new')
+  });
+  socket.on('newLike', function () {
+    console.log('newasdf')
+  });  
+  $scope.emit = function(key, iid, ele) {
+    socket.emit('tUP', { iid: 'iid' });
+  }; 
+  ********************/
+  console.log($rootScope.imgLikeSet)
 });
 
 app.controller('rootCtrl', function($rootScope, $scope, $state, $ionicModal,$http , User) {
@@ -224,6 +272,8 @@ app.controller('rootCtrl', function($rootScope, $scope, $state, $ionicModal,$htt
   };
   $rootScope.$ionicGoBack = function() {
     localStorage.removeItem("user");
+    $rootScope.showUserInfo = false
+    $rootScope.foundUser = false
     $state.go('root');
   };
 });
@@ -341,7 +391,7 @@ app.controller('MediaCtrl', function($rootScope, $scope, $ionicModal) {
     if(type === 'cmt') model_url = 'templates/model-comment.html';
     //console.log(ele.target.src)
     $scope.imgSrc = ele.target.src;
-    $scope.imgIdx = idx;
+    $scope.iid = idx;
     $scope.vidSrc = idx;
     $scope.showModal(model_url);
   };
@@ -364,41 +414,92 @@ app.controller('MediaCtrl', function($rootScope, $scope, $ionicModal) {
 });
 
 app.controller('comMgt', function($rootScope, $scope, $ionicModal, User, socket) {
-  $scope.postCmt = function(id){
-    $rootScope.imgSet[$scope.imgIdx].comment.push($scope.newCmt);
+  $scope.postCmt = function(iid){
+    $rootScope.imgCmtSet[iid].push($scope.newCmt);
    //console.log($rootScope.imgSet)
-    socket.emit('postCmt', { imgIdx: id, cmt: $scope.newCmt});
+    socket.emit('postCmt', { iid: iid, cmt: $scope.newCmt});
   };
-  socket.on('new', function (data) {
+  socket.on('newCmt', function (data) {
     //$rootScope.imgSet = data.newSet;
     console.log(data)
   });
 });
 
-app.controller('fbCtrl', function($rootScope, $http, $scope, $ionicModal, User, socket) {
-  $scope.send = function(user, text){
+app.controller('fbCtrl', function($rootScope, $scope, $window, $http, User) {
+  var user = JSON.parse(localStorage.getItem('user'))
+  console.log(localStorage.getItem('text'))
+  $scope.text = localStorage.getItem('text')
+  $scope.tool = false
+  if(user.tool) $scope.tool = true
+  
+  $scope.analyze = false
+  $scope.send = function(text){
     console.log(user)
     console.log(text)
+    //localStorage.setItem('text', text)
+    //console.log(localStorage)
+    //$window.open('https://personality-insights-nodejs-lame-1552.mybluemix.net/', '_blank');
+    /*
+    url= 'http://localhost:4000/sunburst'
+    $http.post(url, {data: 'searchString'}, {headers: {'Content-Type': 'application/json'} })
+        .then(function (response) {
+            return response;
+        });
+  */
+  var text = 'For more than twenty years past I have been paying special attention to the question of Health. While in England, I had to make my own arrangements for food and drink, and I can say, therefore, that my experience is quite reliable. I have arrived at certain definite conclusions from that experience, and I now set them down for the benefit of my readers.As the familiar saying goes, ‘Prevention is better than cure.’ It is far easier and safer to prevent illness by the observance of the laws of health than to set about curing the illness which has been brought on by our own ignorance and carelessness. Hence it is the duty of all thoughtful men to understand aright the laws of health, and the object of the following pages is to give an account of these laws. We shall also consider the best methods of cure for some of the most common diseases.As Milton says, the mind can make a hell of heaven or a heaven of hell. So heaven is not somewhere above the clouds, and hell somewhere [Pg 2] underneath the earth! We have this same idea expressed in the Sanskrit saying, Mana êva Manushayanâm Kâranam Bandha Mokshayoh—man’s captivity or freedom is dependant on the state of his mind. From this it follows that whether a man is healthy or unhealthy depends on himself. Illness is the result not only of our actions but also of our thoughts. As has been said by a famous doctor, more people die for fear of diseases like small-pox, cholera and plague than out of those diseases themselves.'
+
+  var data = new FormData;
+data.append('from', 'froafsdam');
+data.append('to', 'fdsa');
     $http({
       method: 'POST',
-      url: './api/pi',
-      data: JSON.stringify({user: user.name, text:text, uid: user.uid}),
-      headers: {'Content-Type': 'application/json'}
+      //url: 'https://personality-insights-nodejs-lame-1552.mybluemix.net/',
+      url: 'http://localhost:4000',
+      //url: './api/pi',
+      //headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      //headers: {'Content-Type': 'application/json'},
+      //data: JSON.stringify({user: user, text:text, uid: user.uid})
+      //data: JSON.stringify(text)
+      //data:  text
+      data: text,
+    transformRequest: false,
+    headers: { 'Content-Type': 'text/plain' }
     }).then(
       function successCallback(response) {
         console.log(response.data)
       }, 
       function errorCallback(response) {
-        console.log('er')
+        console.log(response)
       }
     );
-
+    
 
   };
+  $scope.save = function(text){
+    console.log(user)
+    console.log(text)
+    localStorage.setItem['text'] = text
+  };
+  $scope.toggleBTN = function(){
+    if(!$scope.analyze)      
+      $scope.analyze = true
+    else
+      $scope.analyze = false
+  }
 });
 
 app.controller('drawCtrl', function($rootScope, $http, $scope, $ionicModal, User, socket) {
   console.log(localStorage.getItem('user'))
-  
+  /*
+  socket.on('new', function () {
+    console.log('new')
+  });
+  socket.on('newLike', function () {
+    console.log('newasdf')
+  });  
 
+  $scope.emit = function(key, iid, ele) {
+    socket.emit('tUP', { iid: 'iid' });
+  }; 
+  */
 });
