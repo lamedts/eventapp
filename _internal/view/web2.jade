@@ -1,0 +1,184 @@
+doctype html
+html
+	head
+		link(rel="shortcut icon" type="img/png" href="img/golf.png")
+		title Golf #{uid}
+		script(src='http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js')
+		script(scr='./js/bootstrap.min.js')
+		script(src='./js/app.js')
+		link(href='./css/bootstrap.min.css', rel='stylesheet')
+		link(href='./css/bootstrap-theme.min.css', rel='stylesheet')
+		link(href='./css/custom.css', rel='stylesheet')
+		link(rel='stylesheet', href='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+		script(src='http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+			
+		
+	body(ng-app="app", ng-controller="getInfo")
+		.container-fluid
+			.page-header(align="center")
+				h1 Golf Information
+				img(src='./img/golf-player.png')
+
+			.jumbotron(style='background-color:#95D47A;',id="page")
+				.row
+					.col-sm-3
+						.jumbotron(style='background-color:#887952', id="yard")
+							h4(align='center',style='color:white;') YARD
+							table
+								tr.col-xs-12(ng-repeat="yardName in yardNames track by $index")
+									td
+										.btn-group.btn-group-justified(role="group" aria-label="...")
+											.btn-group(role="group")
+												button.btn.btn-default(type="button",ng-click="correspondingDate($index);", data-toggle='dropdown', aria-haspopup='true', aria-expanded='false' )
+													img(src='./img/flag.png')
+													a(ng-href="#",id="{{$index}}") {{yardName.doc.name}}
+													&nbsp;&nbsp;
+													span.caret
+												ul.dropdown-menu(role='menu')
+													li(ng-repeat="finalDate in finalDates",ng-click="correspondingDateUser($index);")
+														a(ng-href="#") {{finalDate}}
+											// .btn-group(role="group")
+											// 	button.btn.btn-default.dropdown-toggle(type="button", data-toggle='dropdown', aria-haspopup='true', aria-expanded='false',ng-click="correspondingDate($index);")
+											// 		span.caret
+											// 		span.sr-only Toggle Dropdown
+											// 	ul.dropdown-menu(role='menu')
+											// 		li(ng-repeat="finalDate in finalDates",ng-click="correspondingDateUser($index);")
+											// 			a(ng-href="#") {{finalDate}}
+												
+							
+
+						a.btn.btn-primary(input type='button', href="#showTable",ng-click="toggle()", aria-label="Toggle ngHide", data-toggle='collapse', data-target="#webcreateYard")
+								| Create Yard 
+								
+					.col-sm-9
+						.panel 
+							table.table.table-striped(align='center', ng-click="yardOutput();")
+								tr
+									th Name
+									th.text-center(colspan="18", align='center') Par
+								tr(style='color:white;')
+									th 
+									th 1
+									th 2
+									th 3
+									th 4
+									th 5
+									th 6
+									th 7
+									th 8
+									th 9 
+									th 10
+									th 11
+									th 12
+									th 13
+									th 14
+									th 15
+									th 16
+									th 17
+									th 18						
+								tr(ng-repeat="name in names track by $index" )
+									td {{name.doc.name}}
+									td(ng-repeat="upar in name.doc.upar track by $index") {{upar}}
+						.h3(align="center") Name: {{finalYard}}
+						.h3(align="center") Address: {{finalAddress}}	
+
+		
+			.jumbotron(ng-show="addVenue", id="showTable",style='background-color:#95D47A;')
+				.row
+					.col-sm-12
+						form(name="userForm", align="center", ng-submit="clickEvent();")
+							.panel 
+								table.table.table-striped(id="webCreateYard", name="userForm")
+									tr
+										th Name
+										td 
+											input(type="text", id="name",name = "name", class="form-control",ng-model="newData.name", placeholder="Name")
+									tr	 
+										th Par
+										td
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[0]", placeholder="Hole 1")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[1]", placeholder="Hole 2")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[2]", placeholder="Hole 3")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[3]", placeholder="Hole 4")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[4]", placeholder="Hole 5")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[5]", placeholder="Hole 6")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[6]", placeholder="Hole 7")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[7]", placeholder="Hole 8")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[8]", placeholder="Hole 9")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[9]", placeholder="Hole 10")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[10]", placeholder="Hole 11")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[11]", placeholder="Hole 12")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[12]", placeholder="Hole 13")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[13]", placeholder="Hole 14")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[14]", placeholder="Hole 15")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[15]", placeholder="Hole 16")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[16]", placeholder="Hole 17")
+											.col-sm-2
+												input(type="number",id="Par",name="Par",class="form-control",ng-model="newData.Par[17]", placeholder="Hole 18")
+									tr	 
+										th SI
+										td
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[0]", placeholder="Hole 1")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[1]", placeholder="Hole 2")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[2]", placeholder="Hole 3")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[3]", placeholder="Hole 4")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[4]", placeholder="Hole 5")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[5]", placeholder="Hole 6")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[6]", placeholder="Hole 7")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[7]", placeholder="Hole 8")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[8]", placeholder="Hole 9")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[9]", placeholder="Hole 10")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[10]", placeholder="Hole 11")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[11]", placeholder="Hole 12")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[12]", placeholder="Hole 13")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[13]", placeholder="Hole 14")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[14]", placeholder="Hole 15")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[15]", placeholder="Hole 16")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[16]", placeholder="Hole 17")
+											.col-sm-2
+												input(type="number",id="SI",name="SI",class="form-control",ng-model="newData.SI[17]", placeholder="Hole 18")
+									tr	 
+										th Address
+										td 
+											input(type="text", id="name",name = "address", class="form-control",ng-model="newData.address", placeholder="Address")
+							button.btn.btn-default(type='submit') Submit
+		
+
+		
+			
+		

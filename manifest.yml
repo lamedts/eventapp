@@ -1,8 +1,11 @@
 applications:
 - path: .
-  memory: 768M
+  memory: 512M
   instances: 1
-  domain: mybluemix.net
-  name: eventapp
-  host: eventapp
+  # domain: mybluemix.net
+  domain: au-syd.mybluemix.net
+  # name: eventapp
+  # host: eventapp
+  name: blockchain
+  host: blockchain
   disk_quota: 1024M

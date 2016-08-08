@@ -1,0 +1,44 @@
+doctype html
+html(lang="en")
+	head
+		title= "Claim"
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
+		script(src="js/jquery.min.js")
+		script(src="js/bootstrap.min.js")
+		link(rel="stylesheet", href="css/bootstrap.min.css")
+		link(rel="stylesheet", href="css/style.css")
+	body
+		.container
+			h1.col-md-offset-2 Claim Form | #{company}
+		.container
+			.jumbotron.col-md-offset-2.col-md-8.col-xs-12
+				form(action="check_claim" method="post")
+					.form-group.row
+						label.col-xs-3.col-form-label Customer Name
+						.col-xs-9
+							input.form-control(type="text" name="name")
+					.form-group.row
+						label.col-xs-3.col-form-label HKID
+						.col-xs-9
+							input.form-control(type="text" name="hkid")
+					.form-group.row
+						label.col-xs-3.col-form-label Receipt ID
+						.col-xs-9
+							input.form-control(type="text" name="_id")
+					.form-group.row
+						label.col-xs-3.col-form-label Amount
+						.col-xs-9
+							.input-group
+								.input-group-addon $
+								input.form-control(type="number" name="amount")
+					.form-group.row
+						label.col-xs-3.col-form-label Claim amount
+						.col-xs-9
+							.input-group
+								.input-group-addon $
+								input.form-control(type="number" name="claim_amount")
+					.form-group.row
+						input.form-control(type="hidden" name="company" value="#{company}" readonly)
+					.form-group.row
+						button.btn.btn-primary.pull-right.col-md-3.col-xs-4(type="submit") Claim

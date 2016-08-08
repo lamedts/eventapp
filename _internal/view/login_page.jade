@@ -1,0 +1,24 @@
+doctype html
+html(lang="en")
+	head
+		title= "Login"
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
+		script(src="js/jquery.min.js")
+		script(src="js/bootstrap.min.js")
+		link(rel="stylesheet", href="css/bootstrap.min.css")
+		link(rel="stylesheet", href="css/style.css")
+	body
+		.container
+			h1.col-md-offset-3 Login | #{company}
+		.container
+			.jumbotron.col-md-offset-3.col-md-6.col-xs-12
+					form(action="claim")
+						.form-group.row
+							label.col-xs-3.col-form-label User Name
+							.col-xs-9
+								input.form-control(type="text" name="name")
+						.form-group.row
+							input.form-control(type="hidden" name="company" value="#{company}")
+						.form-group.row
+							button.btn.btn-primary.pull-right.col-md-3.col-xs-4(type="submit") Login

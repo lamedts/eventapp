@@ -1,0 +1,96 @@
+doctype html
+html(lang="en", ng-app="app")
+	head
+		title= "GOLF INFORMATION"
+		meta(charset="utf-8")
+		meta(name="viewport", content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no")
+		script(src="js/jquery.min.js")
+		script(src="js/angular.min.js")
+		script(src="js/bootstrap.min.js")
+		script(src="js/app.js")
+		link(rel="stylesheet", href="css/normalize.css")
+		link(rel="stylesheet", href="css/bootstrap.min.css")
+		link(rel="stylesheet", href="css/style.css")
+		link(rel="stylesheet", href="css/font-awesome.min.css")
+		link(rel="shortcut icon" type="img/png" href="img/golf.png")
+	body(ng-controller="userCtrl")
+		<br>
+		// button(type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-example-modal-lg") modal
+		div(id="nameModal" class="modal fade bs-example-modal-lg" tableindex="-1" role="dialog")
+			div(class="modal-dialog")
+				div(class="modal-content")
+					div(class="modal-header")
+						h4(class="modal-title") Please enter your name:
+					div(class="modal-body")
+						input(id="nameInput" ng-model="userName" size="20")
+					div(class="modal-footer")
+						// button(type="button", class="btn btn-default", data-dismiss="modal") Close
+						button(type="button", class="btn btn-primary", ng-click="createUser(userName)", ng-disabled="loading") 
+							i(class="fa fa-spinner fa-pulse" ng-show="loading")
+							| {{loadMessage}}
+
+		div(id="submitModal" class="modal fade bs-example-modal-lg" tableindex="-1" role="dialog")
+			div(class="modal-dialog")
+				div(class="modal-content")
+					div(class="modal-header")
+						h4(class="modal-title") Sending to server ...
+					div(class="modal-body")
+						h4 
+							| {{reminder}}
+							i(class="fa fa-spinner fa-pulse" ng-show="notClose")
+						button(type="button", class="btn btn-default btn-md pull-right", data-dismiss="modal", ng-show="close", ng-click="resetButton()") Close
+					// 	button(type="button", class="btn btn-primary", data-dismiss="modal") Close
+
+		div(class="container-fluid")
+			div(class="row")
+				div(class="col-xs-12")
+					div(class="jumbotron" id="vInfo")
+						div(class="row")
+							div(class="col-xs-9 banner")
+								h2 #{name}
+								h4 地址: #{address}
+							// div(class="col-xs-2")
+							div(class="col-xs-3 golfIcon pull-right")
+								// div(class="golfIcon")
+								// img(src="img/golf.png" style="height: 86px; width:86px" class="pull-left")
+						p(class="pull-right") 
+							span(class="glyphicon glyphicon-user" aria-hidden="true")
+							| &nbsp;&nbsp;{{userName}}
+			div(class="row")
+				div(class="col-xs-12")
+					h5(style="color: rgba(239, 73, 71, 0.83)"  ng-hide="submitted")
+						span(class="glyphicon glyphicon-warning-sign")
+						| &nbsp; You have not submitted yet, please remember to submit before you leave.
+			div(class="row")
+				div(class="col-xs-12")
+					div(class="jumbotron" id="stat")
+						table(class="table table-striped table-condensed table-bordered")
+							thread
+								tr
+									th(class="col-xs-2", align="center") Hole
+									th(class="col-xs-2", align="center") SI
+									th(class="col-xs-2", align="center") Par
+									th(class="col-xs-3", align="center") Your par
+									th(class="col-xs-3", align="center") Your putt
+								each val in [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+									tr
+										th(class="col-xs-2", align="center", ng-model="hole"+'['+(val-1)+']') #{val}
+										td(class="col-xs-2", align="center") #{SI[val-1]}
+										td(class="col-xs-2", align="center") #{Par[val-1]}
+										td(class="col-xs-3", align="center")
+											input(class="numberInput" ng-model="Par"+'['+(val-1)+']' ng-change="updateStat()" type="number" pattern="[0-9]*")
+										td(class="col-xs-3", align="center")
+											input(class="numberInput" ng-model="Putt"+'['+(val-1)+']' ng-change="updateStat()" type="number" pattern="[0-9]*")
+						div(class="row")
+							div(class="col-md-offset-6 col-md-6 col-xs-12")
+								div(class="col-xs-6 text-sm-center")
+									div
+										p(style="float: left") Total Par:&nbsp;
+										p(style="float: left") {{total_par}}
+								div(class="col-xs-6 text-sm-center")
+									div
+										p(style="float: left") Total Putt:&nbsp;
+										p(style="float: left") {{total_putt}}
+
+			button(type="button", class="btn btn-lg btn-success col-md-offset-3 col-md-6 col-xs-12", ng-click="updateUser()") Submit
+		<br>

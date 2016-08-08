@@ -1,7 +1,7 @@
 <ion-view view-title="IBM">
   <ion-content class="padding">
 
-<div class="list card">
+<!-- <div class="list card">
   <div class="item item-divider">
     <div class="col">Table</div>
   </div>
@@ -19,10 +19,55 @@
   <div class="item item-body">
     <div class="col">S1</div>
   </div>
+</div> -->
+
+<!-- <div id="slot_wrapper">
+    <input id="tableInput" type="text" class="search" style="border-style: solid; border-width: 1px; width: 100%; border-color: blue"; readonly>
+    <ul id="tableSlot">
+      Initial list needs the height it will have when filled for jSlots to run correctly. You could fill with real values instead
+      <li>test</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li>
+    </ul>
+</div> -->
+
+<div id="slot_wrapper">
+<br/><br/><br/><br/>
+    <input id="luckyInput" type="text" class="search" style="border-style: solid; border-width: 0.5px; width: 100%; border-color: blue; padding-top:5px" readonly>
+    <ul id="slot">
+    	<!-- Initial list needs the height it will have when filled for jSlots to run correctly. You could fill with real values instead -->
+    	<li>test</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li><li>&nbsp;</li>
+    </ul>
 </div>
-  <button class="button button-stable button-full"  ng-click="emit()" style="color: #5f98e7">
-  Save
-  </button>
+<br/><br/><br/><br/>
+
+<!-- <button type="button" id="random_location">Pick a city</button> -->
+
+<!-- <div class="button-bar" ng-disabled="teamDisabled">
+  <a id="buttonA" ng-disabled="ADisabled" ng-click="chooseTeam('A')" class="button button-block button-positive">Team A</a>
+  <a id="buttonB" ng-disabled="BDisabled" ng-click="chooseTeam('B')" class="button button-block button-assertive">Team B</a>
+</div> -->
+
+<button ng-show="tool" ng-disabled="disabled" ng-click="startDraw()" class="button button-block button-energized">Draw Now!</button>
+<!-- <div class="button-bar" ng-disabled="disabled" >
+  <a ng-show="tool" ng-disabled="tableDisabled" ng-click="startDrawTable()" class="button button-block button-outline button-energized">Draw Lucky Table !</a>
+  <a ng-show="tool" ng-disabled="luckyDisabled" ng-click="startDraw()" class="button button-block button-outline button-assertive">Draw Lucky Guy !</a>
+</div> -->
+
+<div class="list">
+  <a class="item item-avatar" ng-repeat="(key, lucky) in luckyList track by $index">
+    <img src=img/team{{lucky.room}}.png>
+    <h2>{{lucky.name}}</h2>
+    <p style="float: left">Table {{lucky.table}}</p>
+    <p style="float: right">{{lucky.count}}</p>
+  </a>
+</div>
+
+<!-- <button id="congratulation" ng-show="chosen" class="button button-positive button-full">Congratulations !</button> -->
 
   </ion-content>
+
+  <!-- <div ng-show="tool" class="fixed-outside col col-33 col-offset-67" >
+    <div class="col">
+    <button class="button button-circle button-balanced icon ion-ios-redo-outline" ng-click=""></button>
+      </div>
+      </div> -->
 </ion-view>

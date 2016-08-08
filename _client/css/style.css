@@ -1,131 +1,98 @@
 /* Empty. Add your own CSS if you like */
 
-/*
-.outer {
-  display: table !important;
-  width: 100% !important;
-  height: 100% !important;
+*{font-size:15px; font-family: 'cwTeXYen', Tahoma, Geneva, sans-serif;}
+
+@font-face {
+
+  /*圓體*/
+
+  font-family: 'cwTeXYen';
+  font-style: normal;
+  font-weight: 500;
+  src: url(//fonts.gstatic.com/ea/cwtexyen/v3/cwTeXYen-zhonly.eot);
+  src: url(//fonts.gstatic.com/ea/cwtexyen/v3/cwTeXYen-zhonly.eot?#iefix) format('embedded-opentype'),
+  url(//fonts.gstatic.com/ea/cwtexyen/v3/cwTeXYen-zhonly.woff2) format('woff2'),
+  url(//fonts.gstatic.com/ea/cwtexyen/v3/cwTeXYen-zhonly.woff) format('woff'),
+  url(//fonts.gstatic.com/ea/cwtexyen/v3/cwTeXYen-zhonly.ttf) format('truetype');
 }
-.inner {
-  display: table-cell;
-  vertical-align: middle;
+
+th {
   text-align: center;
 }
-.not-active {
-  pointer-events: none;
-  cursor: default;
-}
-*/
 
-input {font-weight:bold;}
-.wallpaper {
-  /*background: url('https://i.imgur.com/NVT1Adx.jpg') no-repeat fixed; */
-  background: url('../img/AppBackground_2.jpg') no-repeat fixed; 
-  background-size: 100% 100%;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
+table input{
+  text-align: center;
+}
+
+.table-bordered>tbody>tr>td, .table-bordered>tbody>tr>th, .table-bordered>tfoot>tr>td, .table-bordered>tfoot>tr>th, .table-bordered>thead>tr>td, .table-bordered>thead>tr>th {
+  border: 1px solid #81b76a;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+ background-color: #6dbc4b;
+}
+
+.jumbotron{
+  background-color: #95D47A;
+}
+
+.modal-dialog {
+  position:absolute;
+  top:50% !important;
+  transform: translate(0, -50%) !important;
+  -ms-transform: translate(0, -50%) !important;
+  -webkit-transform: translate(0, -50%) !important;
+  margin:auto 10%;
+  width:80%;
+  height:25%;
+}
+.modal-content {
+  min-height:100%;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0; 
+}
+.modal-body {
+  padding: 6px;
+  padding-left: 10px;
+}
+.modal-footer {
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+}
+
+#vInfo {
+  margin-bottom: 6px;
+  padding-bottom: 45px;
+}
+
+.golfIcon{
+  background-repeat: no-repeat;
+  background-position: center;
   background-size: cover;
-}
-.pane {
-  background: #f9f9f9; 
-  background-size: 100% 100%;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  background-size: cover;
+  background-image: url("/img/golf.png");
+  height: 70px;
+  width: 70px;
+  margin-top: 15px;
+  margin-right: 12px;
 }
 
-.nop{
-  padding: 0 !important;
-}
-.nom{
-  margin: 0 !important;
+.numberInput{
+  width: 35px;
 }
 
-/*
-media handler
-*/
-#file {
-  display:none;  
+#reminder{
+  padding: 10px;
+  margin-bottom: 10px;
+  background-color: #fd5c63;
+  color: 
 }
 
-.fixed-outside{
-  position: absolute;
-  bottom: 0;
-  color:white;
-  width: 100%;
-  height:  120px;
-  text-align:center;
-}
-
-.has-bottom .scroll{
-  padding-bottom:120px !important;
-}
-
-.button-circle {
-  width: 50px !important;
-  height: 50px !important;
-  border-radius: 50% !important;
-}
-
-/*
-media handler
-*/
-.image-list-thumb {
-    padding: 2px 2px 2px 2px;
-    height: 100px;
-}
- 
-.image-modal {
-    width: 100% !important;
-    height: 100%;
-    top: 0 !important;
-    left: 0 !important;
-}
- 
-.transparent {
-    background: rgba(0, 0, 0, 0.8); !important;
-}
- 
-.fullscreen-image {
-    max-width: 100%;
-    max-height: 100%;
-    bottom: 0;
-    left: 0;
-    margin: auto;
-    overflow: auto;
-    position: fixed;
-    right: 0;
-    top: 0;
-}
-
-
-.center-vertical {
-    display: -webkit-box;
-    display: -moz-box;
-    display: -ms-flexbox;
-    display: -webkit-flex;
-    display: flex;
-    -webkit-box-direction: normal;
-    -moz-box-direction: normal;
-    -webkit-box-orient: horizontal;
-    -moz-box-orient: horizontal;
-    -webkit-flex-direction: row;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -webkit-flex-wrap: nowrap;
-    -ms-flex-wrap: nowrap;
-    flex-wrap: nowrap;
-    -webkit-box-pack: center;
-    -moz-box-pack: center;
-    -webkit-justify-content: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    -webkit-align-content: stretch;
-    -ms-flex-line-pack: stretch;
-    align-content: stretch;
-    -webkit-box-align: center;
-    -moz-box-align: center;
-    -webkit-align-items: center;
-    -ms-flex-align: center;
-    align-items: center;
+#stat{
+  padding-bottom: 0px;
+  margin-bottom: 20px;
 }

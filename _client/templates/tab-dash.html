@@ -4,7 +4,8 @@
       <div class="list card" ng-repeat="(key, img) in items" >
         <div class="item item-divider">{{img.user}}</div>
         <div class="item item-image" >
-          <img ng-src="{{img.url}}" ng-click="showImages($event, 'img')">
+          <img ng-src="{{img.url}}" > <!-- ng-click="showImages($event, 'img')" -->
+          <!-- <img img-fix-orientation="img.url" ng-src="{{img.url}}" ng-click="showImages($event, 'img')"> -->
         </div>
         <div class="item item-divider" >
           <span class="button button-small" ng-click="thumbUp(key, img.id)">{{imgLikeSet[img.id]}} Like</span>

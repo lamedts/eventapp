@@ -15,22 +15,26 @@
       <div class="col">{{user.name}}</div>
     </div>
     <div class="row" ng-show='showUserInfo && foundUser'>
-      <div class="col">Table: </div>
-      <div class="col">{{user.seat}}</div>
+      <div class="col">Room: </div>
+      <div class="col">{{user.team}}</div>
     </div>  
+    <div class="row" ng-show='showUserInfo && foundUser'>
+      <div class="col">Table: </div>
+      <div class="col">{{user.table}}</div>
+    </div>      
     <div class="row" ng-show='showUserInfo && !foundUser'>
       <div class="col">Not Found </div>
       <div class="col">Try again</div>
     </div>        
   </div>
 
-  <div class="item item-body" ng-show='showUserInfo'>
-    <img ng-if="user.seat %2 == 1"class="full-image" src="../img/blue.png" ng-click="showImages($event, 'img')">
-    <img ng-if="user.seat %2 == 0" class="full-image" src="../img/red.png" ng-click="showImages($event, 'img')">
+  <div class="item item-body" ng-show='showUserInfo && foundUser'>
+    <img ng-if="user.team == 'A'"class="full-image" src="../img/blue.png" ng-click="showImages($event, 'img')">
+    <img ng-if="user.team == 'B'" class="full-image" src="../img/red.png" ng-click="showImages($event, 'img')">
   </div>
 
 </div>
-<button class="list card button button-block button-stable" ng-click="next()" ng-show='foundUser'>
+<button class="list card button button-block button-positive"" ng-click="next()" ng-show='foundUser'>
   Next
 </button>
   </ion-content>
